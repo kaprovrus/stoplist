@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Стоп-лист</title>
+<style>
+body { font-family: Arial; background:#f4f6f9; padding:20px; }
+.restaurant { margin-bottom:25px; }
+.restaurant h2 { background:#222; color:#fff; padding:8px; border-radius:6px; }
+.card {
+  background:#fff; padding:10px; margin:6px 0;
+  border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,.08);
+  display:flex; justify-content:space-between;
+}
+.stop { color:red; font-weight:bold; }
+.empty { color:green; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<h1>Стоп-лист</h1>
+<div id="container">Загрузка...</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwqmtU3e3sRR9HVgW9wZ5RMw2RJk3M3_GJzDI5Qcjm5OdG8lqlV4-c6j5ESo44YJEbS/exec";
+
+// 👉 ВОТ ЗДЕСЬ ИДЁТ ОБРАЩЕНИЕ К ТВОЕМУ APPS SCRIPT
+async function loadStopList() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+
+    if (!data || Object.keys(data).length === 0) {
+      container.innerHTML = "<div class='empty'>Нет позиций в стоп-листе</div>";
+      return;
+    }
+
+    for (const org in data) {
+      const block = document.createElement("div");
+      block.className = "restaurant";
+      block.innerHTML = `<h2>${org}</h2>`;
+
+      data[org].forEach(item => {
+        block.innerHTML += `
+          <div class="card">
+            <div>${item.productName}</div>
+            <div class="stop">STOP</div>
+          </div>
+        `;
+      });
+
+      container.appendChild(block);
+    }
+
+  } catch (e) {
+    document.getElementById("container").innerHTML =
+      "<div style='color:red'>Ошибка загрузки</div>";
+    console.error(e);
+  }
+}
+
+loadStopList();
+
+// автообновление каждые 60 сек
+setInterval(loadStopList, 60000);
+</script>
+
+</body>
+</html>
