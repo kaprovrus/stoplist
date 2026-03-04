@@ -5,535 +5,232 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Стоп-лист | T-КЗ</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
-            color: white;
-            padding: 30px;
-        }
-        
-        .header h1 {
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .filters {
-            padding: 20px;
-            background: #f8fafc;
-            border-bottom: 1px solid #eef2f6;
-        }
-        
-        .filter-group {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .filter-wrapper {
-            flex: 2;
-            min-width: 250px;
-            position: relative;
-        }
-        
-        .filter-wrapper i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-        }
-        
-        .filter-input {
-            width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .filter-input:focus {
-            outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-        
-        .filter-select {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 14px;
-            background: white;
-            cursor: pointer;
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #4361ee, #3f37c9);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-        
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-        
-        .stats {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            background: white;
-            border-bottom: 1px solid #eef2f6;
-            flex-wrap: wrap;
-        }
-        
-        .stat-card {
-            background: #f8fafc;
-            padding: 15px 25px;
-            border-radius: 12px;
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        .stat-card span {
-            font-size: 28px;
-            font-weight: 700;
-            color: #4361ee;
-            display: block;
-        }
-        
-        .stat-card p {
-            color: #64748b;
-            font-size: 13px;
-            margin-top: 5px;
-        }
-        
-        .table-container {
-            padding: 20px;
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th {
-            text-align: left;
-            padding: 15px;
-            color: #64748b;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #eef2f6;
-        }
-        
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #eef2f6;
-            color: #1e293b;
-        }
-        
-        .org-badge {
-            background: #f0f4ff;
-            color: #4361ee;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
-            display: inline-block;
-        }
-        
-        .product-name {
-            font-weight: 600;
-            color: #1e293b;
-        }
-        
-        .balance-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        .badge-zero {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        
-        .badge-positive {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-        
-        .date {
-            color: #64748b;
-            font-size: 13px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #64748b;
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 3px solid #eef2f6;
-            border-top: 3px solid #4361ee;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 60px;
-            color: #64748b;
-            background: #f8fafc;
-            border-radius: 12px;
-        }
-        
-        .footer {
-            padding: 20px;
-            text-align: center;
-            color: #64748b;
-            font-size: 13px;
-            border-top: 1px solid #eef2f6;
-        }
-        
-        @media (max-width: 640px) {
-            body { padding: 10px; }
-            .header h1 { font-size: 24px; }
-            .filter-group { flex-direction: column; }
-            .filter-wrapper, .filter-select, .btn { width: 100%; }
-            .stats { flex-direction: column; }
-        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding:20px; min-height:100vh; }
+        .container { max-width:1200px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.3); overflow:hidden; }
+        .header { background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%); color:white; padding:30px; }
+        .header h1 { font-size:28px; display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+        .header p { font-size:16px; opacity:0.9; }
+        .filters { padding:20px; background:#f8fafc; border-bottom:1px solid #eef2f6; }
+        .filter-group { display:flex; gap:15px; flex-wrap:wrap; align-items:center; }
+        .filter-wrapper { flex:2; min-width:250px; position:relative; }
+        .filter-wrapper i { position:absolute; left:15px; top:50%; transform:translateY(-50%); color:#94a3b8; }
+        .filter-input { width:100%; padding:12px 15px 12px 45px; border:2px solid #e2e8f0; border-radius:10px; font-size:14px; transition: all 0.3s; }
+        .filter-input:focus { outline:none; border-color:#4361ee; box-shadow:0 0 0 3px rgba(67,97,238,0.1); }
+        .filter-select { flex:1; min-width:200px; padding:12px 15px; border:2px solid #e2e8f0; border-radius:10px; font-size:14px; background:white; cursor:pointer; }
+        .btn { padding:12px 25px; border:none; border-radius:10px; font-weight:600; cursor:pointer; transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-primary { background: linear-gradient(135deg, #4361ee, #3f37c9); color:white; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(67,97,238,0.3); }
+        .btn-secondary { background:#e2e8f0; color:#1e293b; }
+        .btn-secondary:hover { background:#cbd5e1; }
+        .stats { display:flex; gap:20px; padding:20px; background:white; border-bottom:1px solid #eef2f6; flex-wrap:wrap; }
+        .stat-card { background:#f8fafc; padding:15px 25px; border-radius:12px; flex:1; min-width:150px; }
+        .stat-card span { font-size:28px; font-weight:700; color:#4361ee; display:block; }
+        .stat-card p { color:#64748b; font-size:13px; margin-top:5px; }
+        .table-container { padding:20px; overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; }
+        th { text-align:left; padding:15px; color:#64748b; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #eef2f6; }
+        td { padding:15px; border-bottom:1px solid #eef2f6; color:#1e293b; }
+        .org-badge { background:#f0f4ff; color:#4361ee; padding:6px 12px; border-radius:20px; font-weight:600; font-size:13px; display:inline-block; }
+        .product-name { font-weight:600; color:#1e293b; }
+        .balance-badge { display:inline-block; padding:6px 12px; border-radius:20px; font-size:13px; font-weight:600; }
+        .badge-zero { background:#fee2e2; color:#dc2626; }
+        .badge-positive { background:#dcfce7; color:#16a34a; }
+        .date { color:#64748b; font-size:13px; }
+        .loading { text-align:center; padding:60px; color:#64748b; }
+        .loading-spinner { display:inline-block; width:40px; height:40px; border:3px solid #eef2f6; border-top:3px solid #4361ee; border-radius:50%; animation:spin 1s linear infinite; margin-bottom:15px; }
+        @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        .no-data { text-align:center; padding:60px; color:#64748b; background:#f8fafc; border-radius:12px; }
+        .footer { padding:20px; text-align:center; color:#64748b; font-size:13px; border-top:1px solid #eef2f6; }
+        @media (max-width:640px){ body{padding:10px;} .header h1{font-size:24px;} .filter-group{flex-direction:column;} .filter-wrapper,.filter-select,.btn{width:100%;} .stats{flex-direction:column;} }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🍽️ Стоп-лист T-КЗ</h1>
-            <p><span id="orgCount">0</span> организаций · обновление каждый час</p>
-        </div>
-        
-        <div class="filters">
-            <div class="filter-group">
-                <div class="filter-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" class="filter-input" id="searchInput" placeholder="Поиск по названию блюда...">
-                </div>
-                
-                <select class="filter-select" id="orgFilter">
-                    <option value="">Все организации</option>
-                </select>
-                
-                <select class="filter-select" id="balanceFilter">
-                    <option value="">Все позиции</option>
-                    <option value="zero">Только нет в наличии</option>
-                    <option value="positive">Только в наличии</option>
-                </select>
-                
-                <button class="btn btn-primary" onclick="applyFilters()">
-                    <i class="fas fa-filter"></i> Применить
-                </button>
-                
-                <button class="btn btn-secondary" onclick="resetFilters()">
-                    <i class="fas fa-redo-alt"></i> Сброс
-                </button>
+<div class="container">
+    <div class="header">
+        <h1>🍽️ Стоп-лист T-КЗ</h1>
+        <p><span id="orgCount">0</span> организаций · обновление каждые 5 минут</p>
+    </div>
+    
+    <div class="filters">
+        <div class="filter-group">
+            <div class="filter-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="filter-input" id="searchInput" placeholder="Поиск по названию блюда...">
             </div>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-card">
-                <span id="totalCount">0</span>
-                <p>Всего позиций</p>
-            </div>
-            <div class="stat-card">
-                <span id="zeroCount">0</span>
-                <p>Нет в наличии</p>
-            </div>
-            <div class="stat-card">
-                <span id="orgCount2">0</span>
-                <p>Организаций</p>
-            </div>
-            <div class="stat-card">
-                <span id="uniqueProducts">0</span>
-                <p>Уникальных блюд</p>
-            </div>
-        </div>
-        
-        <div class="table-container">
-            <div id="loading" class="loading">
-                <div class="loading-spinner"></div>
-                <p>Загрузка данных...</p>
-            </div>
-            
-            <div id="noData" class="no-data" style="display: none;">
-                <i class="fas fa-search" style="font-size: 48px; opacity: 0.3; margin-bottom: 15px;"></i>
-                <p>По выбранным фильтрам ничего не найдено</p>
-            </div>
-            
-            <table id="dataTable" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Организация</th>
-                        <th>Блюдо</th>
-                        <th>Наличие</th>
-                        <th>Обновлено</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
-        
-        <div class="footer">
-            <span id="updateDate"></span>
+            <select class="filter-select" id="orgFilter">
+                <option value="">Все организации</option>
+            </select>
+            <select class="filter-select" id="balanceFilter">
+                <option value="">Все позиции</option>
+                <option value="zero">Только нет в наличии</option>
+                <option value="positive">Только в наличии</option>
+            </select>
+            <button class="btn btn-primary" onclick="applyFilters()"><i class="fas fa-filter"></i> Применить</button>
+            <button class="btn btn-secondary" onclick="resetFilters()"><i class="fas fa-redo-alt"></i> Сброс</button>
         </div>
     </div>
-
-    <!-- Font Awesome для иконок -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <script>
-        // ID вашей таблицы и лист
-        const SHEET_ID = '1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho';
-        const SHEET_NAME = 'stop';
-        
-        let originalData = [];
-        let filteredData = [];
-        
-        async function loadData() {
-            try {
-                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
-                
-                const response = await fetch(url);
-                const text = await response.text();
-                
-                // Парсим JSON из ответа
-                const jsonText = text.substring(47, text.length - 2);
-                const data = JSON.parse(jsonText);
-                
-                // Получаем строки с данными
-                const rows = data.table.rows;
-                originalData = [];
-                
-                for (let row of rows) {
-                    if (row.c && row.c.length >= 4) {
-                        originalData.push({
-                            organization: row.c[0]?.v || '—',
-                            product: row.c[1]?.v || '—',
-                            balance: parseInt(row.c[2]?.v) || 0,
-                            date: row.c[3]?.v || new Date().toISOString()
-                        });
-                    }
-                }
-                
-                // Инициализируем отфильтрованные данные
-                filteredData = [...originalData];
-                
-                // Обновляем фильтры
-                updateOrgFilter();
-                
-                // Отображаем данные
-                displayData();
-                
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-                document.getElementById('loading').innerHTML = `
-                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #dc2626; margin-bottom: 15px;"></i>
-                    <p>Ошибка загрузки данных</p>
-                    <button onclick="loadData()" style="margin-top: 15px; padding: 10px 20px; background: #4361ee; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                        <i class="fas fa-sync-alt"></i> Повторить
-                    </button>
-                `;
-            }
-        }
-        
-        function updateOrgFilter() {
-            const orgs = [...new Set(originalData.map(item => item.organization))];
-            const select = document.getElementById('orgFilter');
-            
-            select.innerHTML = '<option value="">Все организации</option>' + 
-                orgs.sort().map(org => `<option value="${org}">${org}</option>`).join('');
-        }
-        
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const orgFilter = document.getElementById('orgFilter').value;
-            const balanceFilter = document.getElementById('balanceFilter').value;
-            
-            filteredData = originalData.filter(item => {
-                // Поиск по названию
-                const matchesSearch = searchTerm === '' || 
-                    item.product.toLowerCase().includes(searchTerm);
-                
-                // Фильтр по организации
-                const matchesOrg = orgFilter === '' || 
-                    item.organization === orgFilter;
-                
-                // Фильтр по наличию
-                let matchesBalance = true;
-                if (balanceFilter === 'zero') matchesBalance = item.balance === 0;
-                if (balanceFilter === 'positive') matchesBalance = item.balance > 0;
-                
-                return matchesSearch && matchesOrg && matchesBalance;
-            });
-            
-            displayData();
-        }
-        
-        function resetFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('orgFilter').value = '';
-            document.getElementById('balanceFilter').value = '';
-            
-            filteredData = [...originalData];
-            displayData();
-        }
-        
-        function displayData() {
-            const loading = document.getElementById('loading');
-            const table = document.getElementById('dataTable');
-            const tbody = document.getElementById('tableBody');
-            const noData = document.getElementById('noData');
-            
-            // Обновляем статистику
-            const total = filteredData.length;
-            const zero = filteredData.filter(item => item.balance === 0).length;
-            const orgs = new Set(filteredData.map(item => item.organization)).size;
-            const unique = new Set(filteredData.map(item => item.product)).size;
-            
-            document.getElementById('totalCount').textContent = total;
-            document.getElementById('zeroCount').textContent = zero;
-            document.getElementById('orgCount').textContent = orgs;
-            document.getElementById('orgCount2').textContent = orgs;
-            document.getElementById('uniqueProducts').textContent = unique;
-            
-            // Обновляем дату
-            document.getElementById('updateDate').textContent = 
-                `Обновлено: ${new Date().toLocaleString('ru-RU')}`;
-            
-            if (total === 0) {
-                loading.style.display = 'none';
-                table.style.display = 'none';
-                noData.style.display = 'block';
-                return;
-            }
-            
-            // Формируем таблицу
-            tbody.innerHTML = filteredData.map(item => `
+    
+    <div class="stats">
+        <div class="stat-card"><span id="totalCount">0</span><p>Всего позиций</p></div>
+        <div class="stat-card"><span id="zeroCount">0</span><p>Нет в наличии</p></div>
+        <div class="stat-card"><span id="orgCount2">0</span><p>Организаций</p></div>
+        <div class="stat-card"><span id="uniqueProducts">0</span><p>Уникальных блюд</p></div>
+    </div>
+    
+    <div class="table-container">
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Загрузка данных...</p>
+        </div>
+        <div id="noData" class="no-data" style="display:none;">
+            <i class="fas fa-search" style="font-size:48px; opacity:0.3; margin-bottom:15px;"></i>
+            <p>По выбранным фильтрам ничего не найдено</p>
+        </div>
+        <table id="dataTable" style="display:none;">
+            <thead>
                 <tr>
-                    <td>
-                        <span class="org-badge">
-                            <i class="fas fa-store" style="margin-right: 5px;"></i>
-                            ${item.organization}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="product-name">${item.product}</span>
-                    </td>
-                    <td>
-                        <span class="balance-badge ${item.balance === 0 ? 'badge-zero' : 'badge-positive'}">
-                            <i class="fas ${item.balance === 0 ? 'fa-times-circle' : 'fa-check-circle'}" style="margin-right: 5px;"></i>
-                            ${item.balance === 0 ? 'Нет в наличии' : `${item.balance} шт.`}
-                        </span>
-                    </td>
-                    <td class="date">
-                        <i class="far fa-clock" style="margin-right: 5px;"></i>
-                        ${formatDate(item.date)}
-                    </td>
+                    <th>Организация</th>
+                    <th>Блюдо</th>
+                    <th>Наличие</th>
+                    <th>Обновлено</th>
                 </tr>
-            `).join('');
-            
-            // Показываем таблицу
-            loading.style.display = 'none';
-            table.style.display = 'table';
-            noData.style.display = 'none';
-        }
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        <span id="updateDate"></span>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<script>
+const SHEET_ID = '1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho';
+const SHEET_NAME = 'stop';
+let originalData = [];
+let filteredData = [];
+
+async function loadData() {
+    try {
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+        const response = await fetch(url);
+        const text = await response.text();
+        const jsonText = text.substring(47, text.length - 2);
+        const data = JSON.parse(jsonText);
+        const rows = data.table.rows;
+        originalData = [];
         
-        function formatDate(dateStr) {
-            try {
-                const date = new Date(dateStr);
-                return date.toLocaleString('ru-RU', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
+        for (let row of rows) {
+            if (row.c && row.c.length >= 4) {
+                originalData.push({
+                    organization: row.c[0]?.v || '—',
+                    product: row.c[1]?.v || '—',
+                    balance: parseInt(row.c[2]?.v) || 0,
+                    date: row.c[3]?.v || new Date().toLocaleString('ru-RU')
                 });
-            } catch {
-                return dateStr;
             }
         }
         
-        // Загружаем данные при открытии страницы
-        document.addEventListener('DOMContentLoaded', loadData);
-        
-        // Обновляем данные каждые 5 минут
-        setInterval(loadData, 5 * 60 * 1000);
-    </script>
+        filteredData = [...originalData];
+        updateOrgFilter();
+        displayData();
+    } catch (error) {
+        console.error('Ошибка загрузки:', error);
+        document.getElementById('loading').innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="font-size:48px; color:#dc2626; margin-bottom:15px;"></i>
+            <p>Ошибка загрузки данных</p>
+            <button onclick="loadData()" style="margin-top:15px; padding:10px 20px; background:#4361ee; color:white; border:none; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-sync-alt"></i> Повторить
+            </button>
+        `;
+    }
+}
+
+function updateOrgFilter() {
+    const orgs = [...new Set(originalData.map(item => item.organization))];
+    const select = document.getElementById('orgFilter');
+    select.innerHTML = '<option value="">Все организации</option>' + 
+        orgs.sort().map(org => `<option value="${org}">${org}</option>`).join('');
+}
+
+function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const orgFilter = document.getElementById('orgFilter').value;
+    const balanceFilter = document.getElementById('balanceFilter').value;
+    
+    filteredData = originalData.filter(item => {
+        const matchesSearch = searchTerm === '' || item.product.toLowerCase().includes(searchTerm);
+        const matchesOrg = orgFilter === '' || item.organization === orgFilter;
+        let matchesBalance = true;
+        if (balanceFilter === 'zero') matchesBalance = item.balance === 0;
+        if (balanceFilter === 'positive') matchesBalance = item.balance > 0;
+        return matchesSearch && matchesOrg && matchesBalance;
+    });
+    
+    displayData();
+}
+
+function resetFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('orgFilter').value = '';
+    document.getElementById('balanceFilter').value = '';
+    filteredData = [...originalData];
+    displayData();
+}
+
+function displayData() {
+    const loading = document.getElementById('loading');
+    const table = document.getElementById('dataTable');
+    const tbody = document.getElementById('tableBody');
+    const noData = document.getElementById('noData');
+
+    const total = filteredData.length;
+    const zero = filteredData.filter(item => item.balance === 0).length;
+    const orgs = new Set(filteredData.map(item => item.organization)).size;
+    const unique = new Set(filteredData.map(item => item.product)).size;
+
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('zeroCount').textContent = zero;
+    document.getElementById('orgCount').textContent = orgs;
+    document.getElementById('orgCount2').textContent = orgs;
+    document.getElementById('uniqueProducts').textContent = unique;
+
+    document.getElementById('updateDate').textContent = `Обновлено: ${new Date().toLocaleString('ru-RU')}`;
+
+    if (total === 0) {
+        loading.style.display = 'none';
+        table.style.display = 'none';
+        noData.style.display = 'block';
+        return;
+    }
+
+    tbody.innerHTML = filteredData.map(item => `
+        <tr>
+            <td><span class="org-badge"><i class="fas fa-store" style="margin-right:5px;"></i>${item.organization}</span></td>
+            <td><span class="product-name">${item.product}</span></td>
+            <td>
+                <span class="balance-badge ${item.balance === 0 ? 'badge-zero' : 'badge-positive'}">
+                    <i class="fas ${item.balance === 0 ? 'fa-times-circle' : 'fa-check-circle'}" style="margin-right:5px;"></i>
+                    ${item.balance === 0 ? 'Нет в наличии' : item.balance + ' шт.'}
+                </span>
+            </td>
+            <td class="date">
+                <i class="far fa-clock" style="margin-right:5px;"></i>
+                ${item.date}
+            </td>
+        </tr>
+    `).join('');
+
+    loading.style.display = 'none';
+    table.style.display = 'table';
+    noData.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', loadData);
+setInterval(loadData, 5*60*1000);
+</script>
 </body>
 </html>
