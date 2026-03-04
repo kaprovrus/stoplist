@@ -5,183 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Стоп-лист организаций</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            padding: 20px;
-            background: #f0f2f5;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        
-        h1 {
-            color: #1a237e;
-            margin-bottom: 20px;
-            font-size: 28px;
-            border-bottom: 3px solid #4CAF50;
-            padding-bottom: 10px;
-        }
-        
-        .info-bar {
-            background: #e8f5e9;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .last-update {
-            color: #2e7d32;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .next-update {
-            background: #fff3e0;
-            color: #e65100;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-        
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            min-width: 1200px;
-        }
-        
-        th {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 13px;
-            padding: 15px 10px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        
-        td {
-            border: 1px solid #e0e0e0;
-            padding: 12px 10px;
-            font-size: 14px;
-        }
-        
-        tbody tr:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .organization-name {
-            font-weight: 600;
-            color: #1a237e;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .status-stop {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-        
-        .status-active {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4CAF50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-            border-left: 4px solid #c62828;
-        }
-        
-        .product-id {
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: #666;
-            background: #f5f5f5;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
-        .balance-negative {
-            font-weight: bold;
-            color: #c62828;
-        }
-        
-        .balance-positive {
-            color: #2e7d32;
-        }
-        
-        .retry-button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        
-        .retry-button:hover {
-            background: #45a049;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; }
+        h1 { color: #1a237e; margin-bottom: 20px; font-size: 28px; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }
+        .info-bar { background: #e8f5e9; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .last-update { color: #2e7d32; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+        .next-update { background: #fff3e0; color: #e65100; padding: 8px 15px; border-radius: 20px; font-size: 14px; }
+        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #ddd; max-height: 600px; overflow-y: auto; }
+        table { border-collapse: collapse; width: 100%; min-width: 1200px; }
+        th { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; font-weight: 600; text-transform: uppercase; font-size: 13px; padding: 15px 10px; position: sticky; top: 0; z-index: 10; }
+        td { border: 1px solid #e0e0e0; padding: 12px 10px; font-size: 14px; }
+        tbody tr:hover { background-color: #f5f5f5; }
+        .organization-name { font-weight: 600; color: #1a237e; }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .status-stop { background-color: #ffebee; color: #c62828; }
+        .status-active { background-color: #e8f5e9; color: #2e7d32; }
+        .loading { text-align: center; padding: 60px 20px; }
+        .spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-message { background-color: #ffebee; color: #c62828; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #c62828; }
+        .product-id { font-family: 'Courier New', monospace; font-size: 12px; color: #666; background: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+        .balance-negative { font-weight: bold; color: #c62828; }
+        .balance-positive { color: #2e7d32; }
+        .retry-button { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -190,10 +37,10 @@
         
         <div class="info-bar">
             <div class="last-update" id="lastUpdate">
-                <span>⏱️</span> Загрузка данных...
+                <span>⏱️</span> Инициализация...
             </div>
             <div class="next-update" id="nextUpdate">
-                ⏰ Следующее обновление через: <span id="countdown">60:00</span>
+                ⏰ Обновление через: <span id="countdown">60:00</span>
             </div>
         </div>
         
@@ -219,7 +66,7 @@
                     <tr>
                         <td colspan="7" class="loading">
                             <div class="spinner"></div>
-                            <div style="margin-top: 20px;">Загрузка данных...</div>
+                            <div style="margin-top: 20px;">Загрузка данных из Google Sheets...</div>
                         </td>
                     </tr>
                 </tbody>
@@ -228,9 +75,10 @@
     </div>
 
     <script>
+        // ССЫЛКА НА ВАШ СКРИПТ (Проверьте, что доступ "Anyone")
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-OU2w7NJXs_YCP5-9PW9Fuk5Xv6Xrd7Xk_pPYkbw-_zOp3seEAyd9iXF9zvBb4Ed1/exec";
+        const PROXY_URL = "https://api.allorigins.win/get?url=";
         
-        // Словарь OrganizationId → Название организации
         const ORG_NAMES = {
             "25dce975-4631-4f2f-b191-0d44195ad5ed": "T-086 КЗ",
             "8c4e2b8e-6b4a-40f4-9c7f-68a2f5d62445": "T-103 КЗ",
@@ -241,247 +89,133 @@
             "6875a62f-f49b-49e4-a2b9-4edc4797d06e": "T-119 КЗ"
         };
         
-        // Кэш для продуктов (ID → название)
-        let productsCache = {
-            // Пример данных, если не загрузятся из таблицы
-            "example-id": "Пример продукта"
-        };
-        
+        let productsCache = {};
         let stoplistCache = null;
         let lastFetchTime = null;
-        let retryCount = 0;
 
-        // Загрузка данных о продуктах через CSV (обходит CORS)
+        // Вспомогательная функция для поиска ключа без учета регистра
+        function getValue(obj, key) {
+            const foundKey = Object.keys(obj).find(k => k.toLowerCase() === key.toLowerCase());
+            return foundKey ? obj[foundKey] : "";
+        }
+
         async function loadProducts() {
-            return new Promise((resolve) => {
-                // Пробуем загрузить через прокси
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+            try {
                 const sheetUrl = encodeURIComponent('https://docs.google.com/spreadsheets/d/1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho/export?format=csv&sheet=products');
+                const response = await fetch(PROXY_URL + sheetUrl);
+                const data = await response.json();
+                const csvText = data.contents;
                 
-                fetch(proxyUrl + sheetUrl)
-                    .then(response => response.text())
-                    .then(csvText => {
-                        const products = {};
-                        const lines = csvText.split('\n');
-                        
-                        // Пропускаем заголовок
-                        for (let i = 1; i < lines.length; i++) {
-                            const line = lines[i].trim();
-                            if (!line) continue;
-                            
-                            // Простой парсинг CSV
-                            const columns = line.split(',');
-                            if (columns.length >= 2) {
-                                const id = columns[0]?.replace(/"/g, '').trim();
-                                const name = columns[1]?.replace(/"/g, '').trim();
-                                
-                                if (id && name) {
-                                    products[id] = name;
-                                }
-                            }
-                        }
-                        
-                        console.log("Загружено продуктов:", Object.keys(products).length);
-                        productsCache = products;
-                        resolve(products);
-                    })
-                    .catch(error => {
-                        console.warn("Не удалось загрузить продукты через прокси:", error);
-                        // Возвращаем пустой объект, но продолжаем работу
-                        resolve({});
-                    });
-            });
-        }
-
-        // Загрузка стоп-листа через JSONP
-        function loadStoplist() {
-            return new Promise((resolve, reject) => {
-                const callbackName = 'jsonp_callback_' + Math.random().toString(36).substr(2, 9);
-                
-                window[callbackName] = function(data) {
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    resolve(data);
-                };
-                
-                const script = document.createElement('script');
-                script.src = `${SCRIPT_URL}?callback=${callbackName}&t=${Date.now()}`;
-                
-                script.onerror = function() {
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    reject(new Error('Не удалось загрузить стоп-лист'));
-                };
-                
-                document.body.appendChild(script);
-                
-                // Таймаут 10 секунд
-                setTimeout(() => {
-                    if (window[callbackName]) {
-                        delete window[callbackName];
-                        document.body.removeChild(script);
-                        reject(new Error('Таймаут загрузки стоп-листа'));
+                const products = {};
+                const lines = csvText.split('\n');
+                for (let i = 1; i < lines.length; i++) {
+                    const columns = lines[i].split(',');
+                    if (columns.length >= 2) {
+                        const id = columns[0]?.replace(/"/g, '').trim();
+                        const name = columns[1]?.replace(/"/g, '').trim();
+                        if (id) products[id] = name;
                     }
-                }, 10000);
-            });
+                }
+                productsCache = products;
+            } catch (e) {
+                console.warn("Продукты не загружены:", e);
+            }
         }
 
-        // Обновление таблицы
+        async function fetchStoplist() {
+            // Прямой запрос через fetch с обходом CORS
+            const targetUrl = encodeURIComponent(SCRIPT_URL + "?t=" + Date.now());
+            const response = await fetch(PROXY_URL + targetUrl);
+            
+            if (!response.ok) throw new Error("Сервер не отвечает");
+            
+            const data = await response.json();
+            // Allorigins возвращает данные в поле .contents как строку, парсим её
+            return JSON.parse(data.contents);
+        }
+
         async function refreshData() {
             const tbody = document.getElementById("tableBody");
             const errorDiv = document.getElementById("errorContainer");
-            const errorText = document.getElementById("errorText");
             
             errorDiv.style.display = "none";
             
             try {
-                // Загружаем продукты (не критично, если не загрузятся)
                 await loadProducts();
-                
-                // Загружаем стоп-лист
-                const stoplist = await loadStoplist();
-                
+                const stoplist = await fetchStoplist();
+                console.log("Полученные данные:", stoplist);
+
                 stoplistCache = stoplist;
                 lastFetchTime = new Date();
-                retryCount = 0;
                 
-                if (!stoplist || stoplist.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">📭 Нет данных в стоп-листе</td></tr>';
+                if (!Array.isArray(stoplist) || stoplist.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">📭 Список пуст</td></tr>';
                     return;
                 }
-                
-                // Очищаем таблицу
+
                 tbody.innerHTML = "";
-                
-                // Заполняем таблицу данными
                 let stopCount = 0;
-                
+
                 stoplist.forEach(item => {
-                    const row = document.createElement("tr");
-                    
-                    // ID организации
-                    const orgId = item.OrganizationId || item.organizationId || item.orgId || "";
-                    
-                    // Название организации из словаря
-                    const orgName = ORG_NAMES[orgId] || orgId;
-                    
-                    // Название продукта
-                    const productId = item.ProductId || item.productId || "";
+                    const orgId = getValue(item, "OrganizationId") || getValue(item, "orgId");
+                    const orgName = ORG_NAMES[orgId] || orgId || "Неизвестно";
+                    const productId = getValue(item, "ProductId");
                     const productName = productsCache[productId] || "Неизвестно";
-                    
-                    // Баланс
-                    const balance = parseFloat(item.Balance !== undefined ? item.Balance : 
-                                   (item.balance !== undefined ? item.balance : 0));
-                    
+                    const balance = parseFloat(getValue(item, "Balance") || 0);
+                    const terminalGroupId = getValue(item, "TerminalGroupId");
+                    const updateDate = getValue(item, "UpdatedAt") || new Date().toLocaleString('ru-RU');
+
                     if (balance <= 0) stopCount++;
-                    
-                    // TerminalGroupId
-                    const terminalGroupId = item.TerminalGroupId || item.terminalGroupId || "";
-                    
-                    // Дата обновления
-                    const updateDate = item.UpdatedAt || item.updatedAt || item.updateTime || 
-                                      new Date().toLocaleString('ru-RU');
-                    
-                    // Статус
+
                     const status = balance <= 0 ? "СТОП" : "Активен";
                     const statusClass = balance <= 0 ? "status-badge status-stop" : "status-badge status-active";
-                    
+
+                    const row = document.createElement("tr");
                     row.innerHTML = `
                         <td><span class="organization-name">${orgName}</span></td>
                         <td>${terminalGroupId}</td>
                         <td><span class="product-id">${productId}</span></td>
                         <td><strong>${productName}</strong></td>
-                        <td class="${balance <= 0 ? 'balance-negative' : 'balance-positive'}">
-                            ${balance.toFixed(2)}
-                        </td>
+                        <td class="${balance <= 0 ? 'balance-negative' : 'balance-positive'}">${balance.toFixed(2)}</td>
                         <td>${updateDate}</td>
                         <td><span class="${statusClass}">${status}</span></td>
                     `;
-                    
                     tbody.appendChild(row);
                 });
-                
-                // Обновляем информацию
+
                 document.getElementById("lastUpdate").innerHTML = `
-                    <span>✅</span> Обновлено: ${lastFetchTime.toLocaleString('ru-RU')}
+                    <span>✅</span> Обновлено: ${lastFetchTime.toLocaleTimeString('ru-RU')} 
                     <span style="background: #ffebee; color: #c62828; padding: 2px 8px; border-radius: 12px; margin-left: 10px;">
                         Стоп: ${stopCount}
                     </span>
                 `;
-                
+
             } catch (error) {
-                console.error("Ошибка:", error);
-                
-                errorText.innerHTML = `Ошибка загрузки: ${error.message}<br>
-                    <small>Проверьте доступ к интернету и повторите попытку</small>`;
+                console.error("Ошибка обновления:", error);
+                document.getElementById("errorText").innerHTML = `Ошибка соединения: ${error.message}`;
                 errorDiv.style.display = "block";
-                
-                if (stoplistCache) {
-                    // Показываем кэшированные данные
-                    displayCachedData();
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">❌ Не удалось загрузить данные</td></tr>';
+                if (!stoplistCache) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">❌ Ошибка загрузки данных</td></tr>';
                 }
             }
         }
 
-        // Показать кэшированные данные
-        function displayCachedData() {
-            if (!stoplistCache) return;
-            
-            const tbody = document.getElementById("tableBody");
-            tbody.innerHTML = "";
-            
-            stoplistCache.forEach(item => {
-                const row = document.createElement("tr");
-                const orgId = item.OrganizationId || item.organizationId || item.orgId || "";
-                const orgName = ORG_NAMES[orgId] || orgId;
-                const productId = item.ProductId || item.productId || "";
-                const productName = productsCache[productId] || "Неизвестно";
-                const balance = parseFloat(item.Balance !== undefined ? item.Balance : 
-                               (item.balance !== undefined ? item.balance : 0));
-                const terminalGroupId = item.TerminalGroupId || item.terminalGroupId || "";
-                const updateDate = item.UpdatedAt || item.updatedAt || item.updateTime || "";
-                const status = balance <= 0 ? "СТОП" : "Активен";
-                const statusClass = balance <= 0 ? "status-badge status-stop" : "status-badge status-active";
-                
-                row.innerHTML = `
-                    <td><span class="organization-name">${orgName} (кэш)</span></td>
-                    <td>${terminalGroupId}</td>
-                    <td><span class="product-id">${productId}</span></td>
-                    <td><strong>${productName}</strong></td>
-                    <td class="${balance <= 0 ? 'balance-negative' : 'balance-positive'}">${balance.toFixed(2)}</td>
-                    <td>${updateDate}</td>
-                    <td><span class="${statusClass}">${status}</span></td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Принудительное обновление
-        window.forceRefresh = function() {
-            refreshData();
-        };
-
-        // Обновление таймера
         function updateCountdown() {
             const now = new Date();
-            const nextUpdate = new Date(now);
-            nextUpdate.setHours(now.getHours() + 1, 0, 0, 0);
-            
-            const diff = nextUpdate - now;
-            const minutes = Math.floor(diff / 60000);
-            const seconds = Math.floor((diff % 60000) / 1000);
-            
+            const minutes = 59 - now.getMinutes();
+            const seconds = 59 - now.getSeconds();
             document.getElementById("countdown").textContent = 
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (minutes === 0 && seconds === 0) refreshData();
         }
 
-        // Запуск
+        window.forceRefresh = refreshData;
+
         document.addEventListener('DOMContentLoaded', () => {
             refreshData();
             setInterval(updateCountdown, 1000);
-            setInterval(() => refreshData(), 3600000); // Каждый час
+            setInterval(refreshData, 300000); // Автообновление каждые 5 минут
         });
     </script>
 </body>
