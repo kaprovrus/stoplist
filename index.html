@@ -75,362 +75,93 @@
             margin-bottom: 8px;
         }
 
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.95;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .debug-panel {
+            background: #1e1e2f;
+            color: #00ff00;
+            padding: 16px 30px;
+            font-family: monospace;
+            font-size: 0.9em;
+            border-bottom: 1px solid #333;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
-        .date-badge {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 1.1em;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .filters {
-            padding: 24px 30px;
-            background: white;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-wrapper {
-            flex: 2;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .filter-wrapper i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-
-        .filter-input {
-            width: 100%;
-            padding: 14px 20px 14px 48px;
-            border: 2px solid #eef2f6;
-            border-radius: 50px;
-            font-size: 1em;
-            transition: var(--transition);
-            background: #f8fafc;
-        }
-
-        .filter-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
-        }
-
-        .filter-select {
-            flex: 1;
-            padding: 14px 24px;
-            border: 2px solid #eef2f6;
-            border-radius: 50px;
-            font-size: 1em;
-            background: #f8fafc;
-            cursor: pointer;
-            min-width: 200px;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 14px 32px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
-        }
-
-        .btn-secondary {
-            background: #eef2f6;
-            color: var(--dark);
-        }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
-            transform: translateY(-2px);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: linear-gradient(to right, #f8fafc, #ffffff);
-        }
-
-        .stat-card {
-            background: white;
-            padding: 24px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.03);
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-        }
-
-        .stat-card h3 {
-            color: var(--primary);
-            font-size: 2.2em;
-            font-weight: 700;
+        .debug-panel h3 {
+            color: #fff;
             margin-bottom: 8px;
         }
 
-        .stat-card p {
-            color: var(--gray);
-            font-size: 0.95em;
-            text-transform: uppercase;
+        .debug-panel pre {
+            margin: 4px 0;
+            white-space: pre-wrap;
         }
 
-        .stat-icon {
-            float: right;
-            font-size: 2.5em;
-            opacity: 0.2;
-            color: var(--primary);
-        }
-
-        .table-container {
-            padding: 0 30px 30px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 8px;
-        }
-
-        th {
-            text-align: left;
-            padding: 16px 20px;
-            color: var(--gray);
-            font-weight: 600;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            background: #f8fafc;
-            border-radius: 12px;
-        }
-
-        td {
-            padding: 20px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            transition: var(--transition);
-        }
-
-        tr:hover td {
-            background: #f8fafc;
-            transform: scale(1.01);
-        }
-
-        .org-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #f0f4ff, #e6ecfe);
-            color: var(--primary);
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.95em;
-            border: 1px solid rgba(67, 97, 238, 0.2);
-        }
-
-        .product-info {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-name {
-            font-weight: 700;
-            color: var(--dark);
-            font-size: 1.1em;
-        }
-
-        .product-code {
-            font-size: 0.85em;
-            color: var(--gray);
-            font-family: 'SF Mono', monospace;
-            background: #f1f3f5;
-            padding: 4px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            width: fit-content;
-        }
-
-        .product-id {
-            font-size: 0.75em;
-            color: var(--gray);
-            font-family: monospace;
-            opacity: 0.6;
-            word-break: break-all;
-        }
-
-        .balance-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.95em;
-            white-space: nowrap;
-        }
-
-        .balance-zero {
-            background: linear-gradient(135deg, #fff0f3, #ffe4e8);
-            color: var(--danger);
-            border: 1px solid rgba(247, 37, 133, 0.2);
-        }
-
-        .balance-positive {
-            background: linear-gradient(135deg, #e6f7e6, #d4f0d4);
-            color: #2b8c3e;
-            border: 1px solid rgba(43, 140, 62, 0.2);
-        }
-
-        .date-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--gray);
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            padding: 20px 30px 30px;
-        }
-
-        .page-btn {
-            min-width: 40px;
-            height: 40px;
-            border: none;
-            background: white;
-            border-radius: 12px;
-            font-weight: 600;
-            color: var(--dark);
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .page-btn:hover:not(:disabled) {
+        .debug-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             background: var(--primary);
             color: white;
-            transform: translateY(-2px);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
         }
 
-        .page-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
+        /* Остальные стили такие же, как в предыдущей версии */
+        .filters { padding: 24px 30px; background: white; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .filter-group { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+        .filter-wrapper { flex: 2; min-width: 300px; position: relative; }
+        .filter-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--gray); }
+        .filter-input { width: 100%; padding: 14px 20px 14px 48px; border: 2px solid #eef2f6; border-radius: 50px; font-size: 1em; transition: var(--transition); background: #f8fafc; }
+        .filter-input:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1); }
+        .filter-select { flex: 1; padding: 14px 24px; border: 2px solid #eef2f6; border-radius: 50px; font-size: 1em; background: #f8fafc; cursor: pointer; min-width: 200px; }
+        .btn-group { display: flex; gap: 12px; }
+        .btn { padding: 14px 32px; border: none; border-radius: 50px; font-size: 1em; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4); }
+        .btn-secondary { background: #eef2f6; color: var(--dark); }
+        .btn-secondary:hover { background: #e2e8f0; transform: translateY(-2px); }
 
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 30px; background: linear-gradient(to right, #f8fafc, #ffffff); }
+        .stat-card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); transition: var(--transition); }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
+        .stat-card h3 { color: var(--primary); font-size: 2.2em; font-weight: 700; margin-bottom: 8px; }
+        .stat-card p { color: var(--gray); font-size: 0.95em; text-transform: uppercase; }
+        .stat-icon { float: right; font-size: 2.5em; opacity: 0.2; color: var(--primary); }
 
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--gray);
-        }
+        .table-container { padding: 0 30px 30px; overflow-x: auto; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        th { text-align: left; padding: 16px 20px; color: var(--gray); font-weight: 600; font-size: 0.9em; text-transform: uppercase; background: #f8fafc; border-radius: 12px; }
+        td { padding: 20px; background: white; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); transition: var(--transition); }
+        tr:hover td { background: #f8fafc; transform: scale(1.01); }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f1f3f5;
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            animation: spin 1s linear infinite;
-        }
+        .org-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: linear-gradient(135deg, #f0f4ff, #e6ecfe); color: var(--primary); border-radius: 50px; font-weight: 600; font-size: 0.95em; border: 1px solid rgba(67, 97, 238, 0.2); }
+        .product-info { display: flex; flex-direction: column; gap: 6px; }
+        .product-name { font-weight: 700; color: var(--dark); font-size: 1.1em; }
+        .product-code { font-size: 0.85em; color: var(--gray); font-family: 'SF Mono', monospace; background: #f1f3f5; padding: 4px 10px; border-radius: 20px; display: inline-block; width: fit-content; }
+        .product-id { font-size: 0.75em; color: var(--gray); font-family: monospace; opacity: 0.6; word-break: break-all; }
+        .balance-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 0.95em; white-space: nowrap; }
+        .balance-zero { background: linear-gradient(135deg, #fff0f3, #ffe4e8); color: var(--danger); border: 1px solid rgba(247, 37, 133, 0.2); }
+        .balance-positive { background: linear-gradient(135deg, #e6f7e6, #d4f0d4); color: #2b8c3e; border: 1px solid rgba(43, 140, 62, 0.2); }
+        .date-cell { display: flex; align-items: center; gap: 8px; color: var(--gray); font-size: 0.9em; white-space: nowrap; }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px 30px 30px; }
+        .page-btn { min-width: 40px; height: 40px; border: none; background: white; border-radius: 12px; font-weight: 600; color: var(--dark); cursor: pointer; transition: var(--transition); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .page-btn:hover:not(:disabled) { background: var(--primary); color: white; transform: translateY(-2px); }
+        .page-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .error {
-            text-align: center;
-            padding: 60px;
-            color: var(--danger);
-        }
+        .loading { text-align: center; padding: 60px; color: var(--gray); }
+        .loading-spinner { width: 50px; height: 50px; border: 4px solid #f1f3f5; border-top: 4px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .no-data {
-            text-align: center;
-            padding: 60px;
-            color: var(--gray);
-            background: #f8fafc;
-            border-radius: 30px;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: #f8fafc;
-            color: var(--gray);
-            font-size: 0.95em;
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            .header { padding: 24px; }
-            .header h1 { font-size: 2em; }
-            .filter-group { flex-direction: column; }
-            .filter-wrapper, .filter-select { width: 100%; }
-            .btn-group { width: 100%; }
-            .btn { flex: 1; justify-content: center; }
-            td { padding: 15px; }
-        }
+        .error { text-align: center; padding: 60px; color: var(--danger); }
+        .no-data { text-align: center; padding: 60px; color: var(--gray); background: #f8fafc; border-radius: 30px; }
+        .footer { text-align: center; padding: 20px; background: #f8fafc; color: var(--gray); font-size: 0.95em; border-top: 1px solid rgba(0,0,0,0.05); }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -450,6 +181,12 @@
                     <span id="lastUpdate">Загрузка...</span>
                 </div>
             </div>
+        </div>
+
+        <!-- Панель отладки (скрыта по умолчанию) -->
+        <div id="debugPanel" class="debug-panel" style="display: none;">
+            <h3>🔍 Отладка загрузки номенклатуры</h3>
+            <div id="debugContent"></div>
         </div>
 
         <div class="filters">
@@ -489,6 +226,11 @@
                 <i class="fas fa-building stat-icon"></i>
                 <h3 id="organizationsCount">0</h3>
                 <p>Организаций</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-database stat-icon"></i>
+                <h3 id="nomenclatureCount">0</h3>
+                <p>В номенклатуре</p>
             </div>
         </div>
 
@@ -546,6 +288,10 @@
         </div>
     </div>
 
+    <button class="debug-toggle" onclick="toggleDebug()">
+        <i class="fas fa-bug"></i> Показать отладку
+    </button>
+
     <script>
         // Словарь названий организаций
         const ORG_NAMES = {
@@ -575,6 +321,11 @@
             filters: {
                 search: '',
                 organization: ''
+            },
+            debug: {
+                loadedIds: new Set(),
+                notFoundIds: new Set(),
+                sampleText: ''
             }
         };
 
@@ -583,28 +334,58 @@
             loadData();
         });
 
+        // Переключение панели отладки
+        function toggleDebug() {
+            const panel = document.getElementById('debugPanel');
+            const btn = document.querySelector('.debug-toggle');
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+                btn.innerHTML = '<i class="fas fa-bug"></i> Скрыть отладку';
+            } else {
+                panel.style.display = 'none';
+                btn.innerHTML = '<i class="fas fa-bug"></i> Показать отладку';
+            }
+        }
+
+        // Обновление панели отладки
+        function updateDebug(message) {
+            const debugContent = document.getElementById('debugContent');
+            const timestamp = new Date().toLocaleTimeString();
+            debugContent.innerHTML += `<pre>[${timestamp}] ${message}</pre>`;
+            debugContent.scrollTop = debugContent.scrollHeight;
+            console.log(message);
+        }
+
         // Загрузка всех данных
         async function loadData() {
             showLoading();
+            updateDebug('Начало загрузки данных...');
             
             try {
-                // Сначала загружаем номенклатуру через прокси
                 await loadNomenclature();
-                // Затем загружаем стоп-лист
                 await loadStoplist();
                 
                 hideLoading();
                 renderTable();
+                
+                updateDebug(`✅ Загружено: ${state.nomenclature.size} позиций в номенклатуре, ${state.stoplist.length} записей в стоп-листе`);
+                
+                // Показываем статистику по номенклатуре
+                document.getElementById('nomenclatureCount').textContent = state.nomenclature.size;
+                
             } catch (error) {
                 console.error('Ошибка загрузки:', error);
+                updateDebug(`❌ Ошибка: ${error.message}`);
                 showError('Не удалось загрузить данные. Проверьте подключение к интернету.');
             }
         }
 
-        // Загрузка номенклатуры через прокси
+        // Загрузка номенклатуры
         async function loadNomenclature() {
+            updateDebug('Загрузка файла номенклатуры...');
+            
             try {
-                // Используем несколько прокси для надежности
+                // Пробуем разные прокси
                 const proxies = [
                     `https://api.allorigins.win/raw?url=https://drive.google.com/uc?export=download&id=${CONFIG.NOMENCLATURE_FILE_ID}`,
                     `https://corsproxy.io/?https://drive.google.com/uc?export=download&id=${CONFIG.NOMENCLATURE_FILE_ID}`,
@@ -614,59 +395,125 @@
                 let response = null;
                 let lastError = null;
                 
-                // Пробуем каждый прокси по очереди
                 for (const proxy of proxies) {
                     try {
-                        console.log('Пробуем загрузить через:', proxy);
+                        updateDebug(`Пробуем прокси: ${proxy.substring(0, 50)}...`);
                         response = await fetch(proxy, {
                             mode: 'cors',
-                            headers: {
-                                'Accept': 'text/plain, application/json, */*'
-                            }
+                            headers: { 'Accept': 'text/plain, */*' }
                         });
                         
                         if (response.ok) {
-                            console.log('Успешно загружено через:', proxy);
+                            updateDebug(`✅ Успешно загружено через прокси`);
                             break;
                         }
                     } catch (e) {
                         lastError = e;
-                        console.warn('Прокси не работает:', proxy);
+                        updateDebug(`⚠️ Прокси не работает: ${e.message}`);
                         continue;
                     }
                 }
                 
                 if (!response || !response.ok) {
-                    // Если не удалось загрузить, используем встроенные тестовые данные
-                    console.warn('Использую встроенную номенклатуру');
-                    useEmbeddedNomenclature();
-                    return;
+                    throw new Error('Не удалось загрузить файл через прокси');
                 }
                 
                 const text = await response.text();
-                console.log('Получен текст номенклатуры, длина:', text.length);
+                updateDebug(`📄 Получен текст, длина: ${text.length} символов`);
                 
-                // Парсим полученные данные
-                const parsed = parseNomenclature(text);
+                // Сохраняем начало файла для отладки
+                state.debug.sampleText = text.substring(0, 500);
+                updateDebug(`Пример текста: ${state.debug.sampleText}`);
                 
-                if (parsed === 0) {
-                    console.warn('Не найдено записей в номенклатуре, использую встроенную');
-                    useEmbeddedNomenclature();
+                // Парсим номенклатуру
+                const count = parseNomenclatureAdvanced(text);
+                
+                if (count === 0) {
+                    updateDebug('⚠️ Не найдено записей в номенклатуре!');
                 } else {
-                    console.log(`Загружено ${parsed} записей из номенклатуры`);
+                    updateDebug(`✅ Найдено ${count} записей в номенклатуре`);
                 }
                 
             } catch (error) {
-                console.error('Ошибка загрузки номенклатуры:', error);
+                updateDebug(`❌ Ошибка загрузки номенклатуры: ${error.message}`);
                 useEmbeddedNomenclature();
             }
         }
 
-        // Встроенная номенклатура на случай если не удалось загрузить
-        function useEmbeddedNomenclature() {
-            console.log('Использую встроенную номенклатуру');
+        // Продвинутый парсинг номенклатуры
+        function parseNomenclatureAdvanced(text) {
+            let count = 0;
             
-            // Добавляем известные позиции из вашего примера
+            // Паттерн 1: Поиск JSON-подобных записей
+            updateDebug('Паттерн 1: Поиск JSON-записей...');
+            const jsonPattern = /"id":"([^"]+)","code":"([^"]*)","name":"([^"]+)"/g;
+            let match;
+            
+            while ((match = jsonPattern.exec(text)) !== null) {
+                const id = match[1];
+                const code = match[2];
+                const name = match[3];
+                
+                if (id && id.length > 30 && name) {
+                    state.nomenclature.set(id, { name, code: code || '—' });
+                    state.debug.loadedIds.add(id);
+                    count++;
+                }
+            }
+            
+            if (count > 0) {
+                updateDebug(`   Найдено ${count} записей`);
+                return count;
+            }
+            
+            // Паттерн 2: Поиск всех UUID и названий рядом
+            updateDebug('Паттерн 2: Поиск UUID и названий...');
+            const uuidPattern = /([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/gi;
+            const namePattern = /[nN]ame["\s:]+"([^"]{3,})"/g;
+            
+            const uuids = [...text.matchAll(uuidPattern)].map(m => m[1]);
+            const names = [...text.matchAll(namePattern)].map(m => m[1]);
+            
+            updateDebug(`   Найдено UUID: ${uuids.length}, названий: ${names.length}`);
+            
+            // Пробуем сопоставить
+            for (let i = 0; i < Math.min(uuids.length, names.length); i++) {
+                state.nomenclature.set(uuids[i], {
+                    name: names[i],
+                    code: '—'
+                });
+                state.debug.loadedIds.add(uuids[i]);
+                count++;
+            }
+            
+            if (count > 0) {
+                updateDebug(`   Сопоставлено ${count} записей`);
+                return count;
+            }
+            
+            // Паттерн 3: Поиск в формате "ID - название"
+            updateDebug('Паттерн 3: Поиск в формате ID - название...');
+            const dashPattern = /([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})[^a-f0-9]+([А-ЯЁA-Z][^"]{3,})/gi;
+            
+            while ((match = dashPattern.exec(text)) !== null) {
+                const id = match[1];
+                const name = match[2].trim();
+                
+                if (id && name && name.length < 200) {
+                    state.nomenclature.set(id, { name, code: '—' });
+                    state.debug.loadedIds.add(id);
+                    count++;
+                }
+            }
+            
+            updateDebug(`   Найдено ${count} записей`);
+            return count;
+        }
+
+        // Встроенная номенклатура
+        function useEmbeddedNomenclature() {
+            updateDebug('📦 Использую встроенную номенклатуру');
+            
             const embeddedData = [
                 { id: "88380744-2d57-4539-a977-d4581027fc44", code: "06848", name: "АКЦИЯ АРИГАТО СЕТ + 4 МАРТИНИ ТОНИК ФИЕРО" },
                 { id: "2d4cc037-1414-458f-a084-7a76f2b75062", code: "00001", name: "Т110 КЗ" },
@@ -680,66 +527,19 @@
                     name: item.name,
                     code: item.code
                 });
+                state.debug.loadedIds.add(item.id);
             });
             
-            console.log(`Добавлено ${embeddedData.length} записей во встроенную номенклатуру`);
-        }
-
-        // Парсинг файла номенклатуры
-        function parseNomenclature(text) {
-            let count = 0;
-            
-            // Паттерн для поиска: "id":"...","code":"...","name":"..."
-            const patterns = [
-                /"id":"([^"]+)","code":"([^"]*)","name":"([^"]+)"/g,
-                /id["\s:]+([a-f0-9-]+)[^}]+code["\s:]+"?([^",]+)"?[^}]+name["\s:]+"?([^"}]+)/gi,
-                /([a-f0-9-]{36}).*?(\d{5}).*?([А-ЯЁ\s]+[^"]+)/gi
-            ];
-            
-            for (const pattern of patterns) {
-                let match;
-                while ((match = pattern.exec(text)) !== null) {
-                    const id = match[1]?.trim();
-                    const code = match[2]?.trim() || '—';
-                    const name = match[3]?.trim();
-                    
-                    if (id && id.length > 30 && name && name.length > 2) {
-                        state.nomenclature.set(id, {
-                            name: name,
-                            code: code
-                        });
-                        count++;
-                    }
-                }
-                if (count > 0) break;
-            }
-            
-            // Если не нашли, пробуем другой подход - ищем все UUID и названия рядом
-            if (count === 0) {
-                const uuidRegex = /([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/gi;
-                const nameRegex = /name["\s:]+"([^"]+)"/g;
-                
-                const uuids = [...text.matchAll(uuidRegex)].map(m => m[1]);
-                const names = [...text.matchAll(nameRegex)].map(m => m[1]);
-                
-                for (let i = 0; i < Math.min(uuids.length, names.length); i++) {
-                    state.nomenclature.set(uuids[i], {
-                        name: names[i],
-                        code: '—'
-                    });
-                    count++;
-                }
-            }
-            
-            return count;
+            updateDebug(`✅ Добавлено ${embeddedData.length} записей`);
+            document.getElementById('nomenclatureCount').textContent = state.nomenclature.size;
         }
 
         // Загрузка стоп-листа
         async function loadStoplist() {
+            updateDebug('Загрузка стоп-листа из Google Sheets...');
+            
             try {
-                // Используем прокси для Google Sheets
                 const proxyUrl = `https://api.allorigins.win/raw?url=https://opensheet.elk.sh/${CONFIG.GOOGLE_SHEET_ID}/${CONFIG.STOPLIST_SHEET}`;
-                
                 const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
@@ -747,23 +547,36 @@
                 }
                 
                 const data = await response.json();
+                updateDebug(`✅ Загружено ${data.length} записей из стоп-листа`);
                 
-                if (data && data.length > 0) {
-                    state.stoplist = data.map(item => {
-                        const productInfo = state.nomenclature.get(item.ProductId) || {};
-                        
-                        return {
-                            OrganizationId: item.OrganizationId,
-                            OrganizationName: ORG_NAMES[item.OrganizationId] || `🏢 ${item.OrganizationId?.substring(0, 8)}...`,
-                            ProductId: item.ProductId || 'Не указан',
-                            ProductName: productInfo.name || getDefaultProductName(item.ProductId),
-                            ProductCode: productInfo.code || '—',
-                            Balance: parseInt(item.Balance) || 0,
-                            UpdatedAt: item.UpdatedAt || new Date().toISOString()
-                        };
-                    });
-                } else {
-                    state.stoplist = getMockData();
+                state.stoplist = data.map(item => {
+                    const productId = item.ProductId;
+                    const productInfo = state.nomenclature.get(productId) || {};
+                    
+                    // Отслеживаем ненайденные ID
+                    if (!productInfo.name && productId) {
+                        state.debug.notFoundIds.add(productId);
+                    }
+                    
+                    return {
+                        OrganizationId: item.OrganizationId,
+                        OrganizationName: ORG_NAMES[item.OrganizationId] || `🏢 ${item.OrganizationId?.substring(0, 8)}...`,
+                        ProductId: productId || 'Не указан',
+                        ProductName: productInfo.name || getDefaultProductName(productId),
+                        ProductCode: productInfo.code || '—',
+                        Balance: parseInt(item.Balance) || 0,
+                        UpdatedAt: item.UpdatedAt || new Date().toISOString()
+                    };
+                });
+                
+                // Показываем статистику по ненайденным ID
+                if (state.debug.notFoundIds.size > 0) {
+                    updateDebug(`⚠️ Не найдены в номенклатуре ${state.debug.notFoundIds.size} ID:`);
+                    const notFoundArray = Array.from(state.debug.notFoundIds).slice(0, 5);
+                    notFoundArray.forEach(id => updateDebug(`   - ${id}`));
+                    if (state.debug.notFoundIds.size > 5) {
+                        updateDebug(`   ... и еще ${state.debug.notFoundIds.size - 5}`);
+                    }
                 }
                 
                 state.filteredData = [...state.stoplist];
@@ -772,7 +585,7 @@
                 updateLastUpdate();
                 
             } catch (error) {
-                console.warn('Ошибка загрузки стоп-листа, использую тестовые данные:', error);
+                updateDebug(`❌ Ошибка загрузки стоп-листа: ${error.message}`);
                 state.stoplist = getMockData();
                 state.filteredData = [...state.stoplist];
                 updateFilters();
@@ -787,10 +600,17 @@
             const product = state.nomenclature.get(productId);
             if (product) return product.name;
             
-            return `Блюдо (${productId.substring(0, 8)}...)`;
+            // Пробуем найти частичное совпадение
+            for (const [id, info] of state.nomenclature.entries()) {
+                if (id.includes(productId.substring(0, 8))) {
+                    return info.name + ' (похожий)';
+                }
+            }
+            
+            return `ID: ${productId.substring(0, 12)}...`;
         }
 
-        // Тестовые данные стоп-листа
+        // Тестовые данные
         function getMockData() {
             return [
                 {
@@ -810,15 +630,6 @@
                     ProductCode: "06848",
                     Balance: 0,
                     UpdatedAt: new Date().toISOString()
-                },
-                {
-                    OrganizationId: "6875a62f-f49b-49e4-a2b9-4edc4797d06e",
-                    OrganizationName: "🏢 T-119 КЗ",
-                    ProductId: "8d3cc790-9946-406a-a68d-12a8710e18ab",
-                    ProductName: "Белое вино",
-                    ProductCode: "00023",
-                    Balance: 5,
-                    UpdatedAt: new Date().toISOString()
                 }
             ];
         }
@@ -826,7 +637,6 @@
         // Обновление фильтров
         function updateFilters() {
             const organizations = [...new Set(state.stoplist.map(item => item.OrganizationName))];
-            
             const orgSelect = document.getElementById('organizationFilter');
             orgSelect.innerHTML = '<option value="">🏢 Все организации</option>' + 
                 organizations.sort().map(org => `<option value="${org}">${org}</option>`).join('');
@@ -883,7 +693,7 @@
             document.getElementById('recordsCount').textContent = totalProducts;
         }
 
-        // Обновление даты последнего обновления
+        // Обновление даты
         function updateLastUpdate() {
             const now = new Date();
             document.getElementById('lastUpdate').textContent = 
@@ -996,26 +806,21 @@
             pageNumbers.innerHTML = pages.join('');
         }
 
-        // Смена страницы
         function changePage(direction) {
             const totalPages = Math.ceil(state.filteredData.length / CONFIG.ITEMS_PER_PAGE);
-            
             if (direction === 'prev' && state.currentPage > 1) {
                 state.currentPage--;
             } else if (direction === 'next' && state.currentPage < totalPages) {
                 state.currentPage++;
             }
-            
             renderTable();
         }
 
-        // Переход на страницу
         function goToPage(page) {
             state.currentPage = page;
             renderTable();
         }
 
-        // Вспомогательные функции
         function showLoading() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('error').style.display = 'none';
