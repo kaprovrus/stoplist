@@ -2,14 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Стоп-лист | T-КЗ</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
         :root {
@@ -31,69 +31,484 @@
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 24px;
+            padding: 16px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Контейнер */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
-            animation: fadeIn 0.6s ease-out;
         }
 
+        /* Шапка */
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 32px 40px;
-            position: relative;
-            overflow: hidden;
+            padding: clamp(20px, 5vw, 32px);
         }
 
         .header-content {
-            position: relative;
-            z-index: 1;
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 16px;
         }
 
         .header h1 {
-            font-size: 2.8em;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
             font-weight: 700;
-            letter-spacing: -0.5px;
+            line-height: 1.2;
             margin-bottom: 8px;
         }
 
+        .header p {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.95;
+        }
+
+        .date-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+        }
+
+        /* Фильтры */
+        .filters {
+            padding: clamp(16px, 4vw, 24px);
+            background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-wrapper {
+            flex: 2;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .filter-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border: 2px solid #eef2f6;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: #f8fafc;
+            -webkit-appearance: none;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 180px;
+            padding: 12px 20px;
+            border: 2px solid #eef2f6;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            background: #f8fafc;
+            cursor: pointer;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #eef2f6;
+            color: var(--dark);
+        }
+
+        .btn-secondary:active {
+            background: #dce2e9;
+            transform: scale(0.98);
+        }
+
+        /* Статистика */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            padding: clamp(16px, 4vw, 24px);
+            background: linear-gradient(to right, #f8fafc, #ffffff);
+        }
+
+        .stat-card {
+            background: white;
+            padding: clamp(16px, 3vw, 20px);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+
+        .stat-card h3 {
+            color: var(--primary);
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card p {
+            color: var(--gray);
+            font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Таблица */
+        .table-container {
+            padding: 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            min-width: 600px;
+        }
+
+        /* Мобильная версия таблицы */
+        @media (max-width: 640px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            
+            thead {
+                display: none;
+            }
+            
+            tr {
+                margin-bottom: 16px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                padding: 16px;
+            }
+            
+            td {
+                display: flex;
+                align-items: flex-start;
+                padding: 8px 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            
+            td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--gray);
+                min-width: 100px;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            .org-badge {
+                margin-left: auto;
+            }
+            
+            .product-info {
+                flex: 1;
+                margin-left: auto;
+            }
+            
+            .balance-badge {
+                margin-left: auto;
+            }
+            
+            .date-cell {
+                margin-left: auto;
+            }
+            
+            tr:hover td {
+                transform: none;
+                background: transparent;
+            }
+        }
+
+        /* Десктопная версия таблицы */
+        @media (min-width: 641px) {
+            th {
+                text-align: left;
+                padding: 16px 20px;
+                color: var(--gray);
+                font-weight: 600;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                background: #f8fafc;
+                border-radius: 12px;
+            }
+
+            td {
+                padding: 16px 20px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+                transition: var(--transition);
+            }
+
+            tr:hover td {
+                background: #f8fafc;
+                transform: translateX(5px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
+        }
+
+        /* Бейджи */
+        .org-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #f0f4ff, #e6ecfe);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            white-space: nowrap;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .product-name {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .product-code {
+            font-size: 0.75rem;
+            color: var(--gray);
+            background: #f1f3f5;
+            padding: 2px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .product-id {
+            font-size: 0.7rem;
+            color: var(--gray);
+            font-family: monospace;
+            opacity: 0.6;
+            word-break: break-all;
+        }
+
+        .balance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .balance-zero {
+            background: linear-gradient(135deg, #fff0f3, #ffe4e8);
+            color: var(--danger);
+            border: 1px solid rgba(247, 37, 133, 0.2);
+        }
+
+        .balance-positive {
+            background: linear-gradient(135deg, #e6f7e6, #d4f0d4);
+            color: #2b8c3e;
+            border: 1px solid rgba(43, 140, 62, 0.2);
+        }
+
+        .date-cell {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gray);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 16px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            border: none;
+            background: white;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .page-btn:active {
+            transform: scale(0.9);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Загрузка */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f1f3f5;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Сообщения */
+        .error, .no-data {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+            background: #f8fafc;
+            border-radius: 20px;
+            margin: 20px;
+        }
+
+        .error {
+            color: var(--danger);
+        }
+
+        .error i, .no-data i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Подвал */
+        .footer {
+            text-align: center;
+            padding: 16px;
+            background: #f8fafc;
+            color: var(--gray);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Панель отладки */
         .debug-panel {
             background: #1e1e2f;
             color: #00ff00;
-            padding: 16px 30px;
+            padding: 16px;
             font-family: monospace;
-            font-size: 0.9em;
-            border-bottom: 1px solid #333;
-            max-height: 200px;
+            font-size: 0.8rem;
+            max-height: 300px;
             overflow-y: auto;
-        }
-
-        .debug-panel h3 {
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .debug-panel pre {
-            margin: 4px 0;
-            white-space: pre-wrap;
+            border-bottom: 1px solid #333;
         }
 
         .debug-toggle {
@@ -104,64 +519,78 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 12px 24px;
+            padding: 10px 20px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.85rem;
             box-shadow: var(--box-shadow);
             z-index: 1000;
+            -webkit-tap-highlight-color: transparent;
+            backdrop-filter: blur(5px);
+            background: rgba(67, 97, 238, 0.9);
         }
 
-        /* Остальные стили такие же, как в предыдущей версии */
-        .filters { padding: 24px 30px; background: white; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .filter-group { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
-        .filter-wrapper { flex: 2; min-width: 300px; position: relative; }
-        .filter-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--gray); }
-        .filter-input { width: 100%; padding: 14px 20px 14px 48px; border: 2px solid #eef2f6; border-radius: 50px; font-size: 1em; transition: var(--transition); background: #f8fafc; }
-        .filter-input:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1); }
-        .filter-select { flex: 1; padding: 14px 24px; border: 2px solid #eef2f6; border-radius: 50px; font-size: 1em; background: #f8fafc; cursor: pointer; min-width: 200px; }
-        .btn-group { display: flex; gap: 12px; }
-        .btn { padding: 14px 32px; border: none; border-radius: 50px; font-size: 1em; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4); }
-        .btn-secondary { background: #eef2f6; color: var(--dark); }
-        .btn-secondary:hover { background: #e2e8f0; transform: translateY(-2px); }
+        .debug-toggle:active {
+            transform: scale(0.95);
+        }
 
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 30px; background: linear-gradient(to right, #f8fafc, #ffffff); }
-        .stat-card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); transition: var(--transition); }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
-        .stat-card h3 { color: var(--primary); font-size: 2.2em; font-weight: 700; margin-bottom: 8px; }
-        .stat-card p { color: var(--gray); font-size: 0.95em; text-transform: uppercase; }
-        .stat-icon { float: right; font-size: 2.5em; opacity: 0.2; color: var(--primary); }
+        /* Адаптация для маленьких экранов */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .btn-group {
+                width: 100%;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .filter-select {
+                width: 100%;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .debug-toggle {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
 
-        .table-container { padding: 0 30px 30px; overflow-x: auto; }
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        th { text-align: left; padding: 16px 20px; color: var(--gray); font-weight: 600; font-size: 0.9em; text-transform: uppercase; background: #f8fafc; border-radius: 12px; }
-        td { padding: 20px; background: white; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); transition: var(--transition); }
-        tr:hover td { background: #f8fafc; transform: scale(1.01); }
+        /* Landscape ориентация */
+        @media (max-width: 850px) and (orientation: landscape) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .filter-group {
+                flex-wrap: nowrap;
+            }
+        }
 
-        .org-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: linear-gradient(135deg, #f0f4ff, #e6ecfe); color: var(--primary); border-radius: 50px; font-weight: 600; font-size: 0.95em; border: 1px solid rgba(67, 97, 238, 0.2); }
-        .product-info { display: flex; flex-direction: column; gap: 6px; }
-        .product-name { font-weight: 700; color: var(--dark); font-size: 1.1em; }
-        .product-code { font-size: 0.85em; color: var(--gray); font-family: 'SF Mono', monospace; background: #f1f3f5; padding: 4px 10px; border-radius: 20px; display: inline-block; width: fit-content; }
-        .product-id { font-size: 0.75em; color: var(--gray); font-family: monospace; opacity: 0.6; word-break: break-all; }
-        .balance-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 0.95em; white-space: nowrap; }
-        .balance-zero { background: linear-gradient(135deg, #fff0f3, #ffe4e8); color: var(--danger); border: 1px solid rgba(247, 37, 133, 0.2); }
-        .balance-positive { background: linear-gradient(135deg, #e6f7e6, #d4f0d4); color: #2b8c3e; border: 1px solid rgba(43, 140, 62, 0.2); }
-        .date-cell { display: flex; align-items: center; gap: 8px; color: var(--gray); font-size: 0.9em; white-space: nowrap; }
+        /* Touch-friendly */
+        .btn, .page-btn, .filter-select, .debug-toggle {
+            touch-action: manipulation;
+        }
 
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px 30px 30px; }
-        .page-btn { min-width: 40px; height: 40px; border: none; background: white; border-radius: 12px; font-weight: 600; color: var(--dark); cursor: pointer; transition: var(--transition); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .page-btn:hover:not(:disabled) { background: var(--primary); color: white; transform: translateY(-2px); }
-        .page-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .loading { text-align: center; padding: 60px; color: var(--gray); }
-        .loading-spinner { width: 50px; height: 50px; border: 4px solid #f1f3f5; border-top: 4px solid var(--primary); border-radius: 50%; margin: 0 auto 20px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .error { text-align: center; padding: 60px; color: var(--danger); }
-        .no-data { text-align: center; padding: 60px; color: var(--gray); background: #f8fafc; border-radius: 30px; }
-        .footer { text-align: center; padding: 20px; background: #f8fafc; color: var(--gray); font-size: 0.95em; border-top: 1px solid rgba(0,0,0,0.05); }
+        /* Убираем выделение при тапе */
+        .btn, .page-btn, .filter-select {
+            -webkit-tap-highlight-color: transparent;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -170,7 +599,7 @@
         <div class="header">
             <div class="header-content">
                 <div>
-                    <h1>🍽️ Стоп-лист T-КЗ</h1>
+                    <h1>🍽️ Стоп-лист</h1>
                     <p>
                         <i class="fas fa-store"></i>
                         <span id="activeOrganizations">0</span> организаций
@@ -183,9 +612,8 @@
             </div>
         </div>
 
-        <!-- Панель отладки (скрыта по умолчанию) -->
+        <!-- Панель отладки -->
         <div id="debugPanel" class="debug-panel" style="display: none;">
-            <h3>🔍 Отладка загрузки номенклатуры</h3>
             <div id="debugContent"></div>
         </div>
 
@@ -193,7 +621,7 @@
             <div class="filter-group">
                 <div class="filter-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" class="filter-input" id="searchInput" placeholder="Поиск по названию, коду или ID блюда...">
+                    <input type="text" class="filter-input" id="searchInput" placeholder="Поиск по названию, коду или ID...">
                 </div>
                 
                 <select class="filter-select" id="organizationFilter">
@@ -202,10 +630,10 @@
                 
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="applyFilters()">
-                        <i class="fas fa-filter"></i> Применить
+                        <i class="fas fa-filter"></i> <span class="btn-text">Применить</span>
                     </button>
                     <button class="btn btn-secondary" onclick="resetFilters()">
-                        <i class="fas fa-redo-alt"></i> Сброс
+                        <i class="fas fa-redo-alt"></i> <span class="btn-text">Сброс</span>
                     </button>
                 </div>
             </div>
@@ -215,7 +643,7 @@
             <div class="stat-card">
                 <i class="fas fa-utensils stat-icon"></i>
                 <h3 id="totalProducts">0</h3>
-                <p>Всего позиций</p>
+                <p>Всего</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-ban stat-icon"></i>
@@ -237,14 +665,14 @@
         <div class="table-container">
             <div id="loading" class="loading">
                 <div class="loading-spinner"></div>
-                <p>Загрузка данных стоп-листа...</p>
+                <p>Загрузка данных...</p>
             </div>
             
             <div id="error" class="error" style="display: none;">
                 <i class="fas fa-exclamation-triangle"></i>
                 <h3>Ошибка загрузки</h3>
                 <p id="errorMessage"></p>
-                <button class="btn btn-primary" onclick="loadData()" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="loadData()" style="margin-top: 16px;">
                     <i class="fas fa-sync-alt"></i> Повторить
                 </button>
             </div>
@@ -281,15 +709,14 @@
 
         <div class="footer">
             <p>
-                <i class="far fa-copyright"></i>
-                T-КЗ Стоп-лист | 
+                <i class="far fa-copyright"></i> T-КЗ Стоп-лист | 
                 <span id="recordsCount">0</span> записей
             </p>
         </div>
     </div>
 
     <button class="debug-toggle" onclick="toggleDebug()">
-        <i class="fas fa-bug"></i> Показать отладку
+        <i class="fas fa-bug"></i> <span class="btn-text">Отладка</span>
     </button>
 
     <script>
@@ -309,7 +736,7 @@
             GOOGLE_SHEET_ID: '1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho',
             STOPLIST_SHEET: 'stoplist',
             NOMENCLATURE_FILE_ID: '1tb96m0HOL_PgAy1R1pEpczLgAMVxHy2g',
-            ITEMS_PER_PAGE: 15
+            ITEMS_PER_PAGE: window.innerWidth < 640 ? 10 : 15 // Разное количество на мобильных
         };
 
         // Состояние приложения
@@ -325,13 +752,21 @@
             debug: {
                 loadedIds: new Set(),
                 notFoundIds: new Set(),
-                sampleText: ''
+                logs: []
             }
         };
 
         // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
+            
+            // Обновляем количество записей на странице при изменении размера окна
+            window.addEventListener('resize', () => {
+                CONFIG.ITEMS_PER_PAGE = window.innerWidth < 640 ? 10 : 15;
+                if (state.filteredData.length > 0) {
+                    renderTable();
+                }
+            });
         });
 
         // Переключение панели отладки
@@ -340,10 +775,10 @@
             const btn = document.querySelector('.debug-toggle');
             if (panel.style.display === 'none') {
                 panel.style.display = 'block';
-                btn.innerHTML = '<i class="fas fa-bug"></i> Скрыть отладку';
+                btn.innerHTML = '<i class="fas fa-bug"></i> <span class="btn-text">Скрыть</span>';
             } else {
                 panel.style.display = 'none';
-                btn.innerHTML = '<i class="fas fa-bug"></i> Показать отладку';
+                btn.innerHTML = '<i class="fas fa-bug"></i> <span class="btn-text">Отладка</span>';
             }
         }
 
@@ -351,8 +786,12 @@
         function updateDebug(message) {
             const debugContent = document.getElementById('debugContent');
             const timestamp = new Date().toLocaleTimeString();
-            debugContent.innerHTML += `<pre>[${timestamp}] ${message}</pre>`;
-            debugContent.scrollTop = debugContent.scrollHeight;
+            const logLine = `[${timestamp}] ${message}`;
+            state.debug.logs.push(logLine);
+            
+            // Показываем только последние 20 сообщений
+            const lastLogs = state.debug.logs.slice(-20).join('<br>');
+            debugContent.innerHTML = lastLogs;
             console.log(message);
         }
 
@@ -368,15 +807,12 @@
                 hideLoading();
                 renderTable();
                 
-                updateDebug(`✅ Загружено: ${state.nomenclature.size} позиций в номенклатуре, ${state.stoplist.length} записей в стоп-листе`);
-                
-                // Показываем статистику по номенклатуре
+                updateDebug(`✅ Загружено: ${state.nomenclature.size} позиций в номенклатуре`);
                 document.getElementById('nomenclatureCount').textContent = state.nomenclature.size;
                 
             } catch (error) {
-                console.error('Ошибка загрузки:', error);
                 updateDebug(`❌ Ошибка: ${error.message}`);
-                showError('Не удалось загрузить данные. Проверьте подключение к интернету.');
+                showError('Не удалось загрузить данные');
             }
         }
 
@@ -393,11 +829,9 @@
                 ];
                 
                 let response = null;
-                let lastError = null;
                 
                 for (const proxy of proxies) {
                     try {
-                        updateDebug(`Пробуем прокси: ${proxy.substring(0, 50)}...`);
                         response = await fetch(proxy, {
                             mode: 'cors',
                             headers: { 'Accept': 'text/plain, */*' }
@@ -408,44 +842,38 @@
                             break;
                         }
                     } catch (e) {
-                        lastError = e;
-                        updateDebug(`⚠️ Прокси не работает: ${e.message}`);
                         continue;
                     }
                 }
                 
                 if (!response || !response.ok) {
-                    throw new Error('Не удалось загрузить файл через прокси');
+                    throw new Error('Не удалось загрузить файл');
                 }
                 
                 const text = await response.text();
                 updateDebug(`📄 Получен текст, длина: ${text.length} символов`);
                 
-                // Сохраняем начало файла для отладки
-                state.debug.sampleText = text.substring(0, 500);
-                updateDebug(`Пример текста: ${state.debug.sampleText}`);
-                
                 // Парсим номенклатуру
                 const count = parseNomenclatureAdvanced(text);
                 
                 if (count === 0) {
-                    updateDebug('⚠️ Не найдено записей в номенклатуре!');
+                    updateDebug('⚠️ Не найдено записей в номенклатуре');
+                    useEmbeddedNomenclature();
                 } else {
-                    updateDebug(`✅ Найдено ${count} записей в номенклатуре`);
+                    updateDebug(`✅ Найдено ${count} записей`);
                 }
                 
             } catch (error) {
-                updateDebug(`❌ Ошибка загрузки номенклатуры: ${error.message}`);
+                updateDebug(`❌ Ошибка: ${error.message}`);
                 useEmbeddedNomenclature();
             }
         }
 
-        // Продвинутый парсинг номенклатуры
+        // Парсинг номенклатуры
         function parseNomenclatureAdvanced(text) {
             let count = 0;
             
-            // Паттерн 1: Поиск JSON-подобных записей
-            updateDebug('Паттерн 1: Поиск JSON-записей...');
+            // Паттерн для поиска JSON-записей
             const jsonPattern = /"id":"([^"]+)","code":"([^"]*)","name":"([^"]+)"/g;
             let match;
             
@@ -461,52 +889,6 @@
                 }
             }
             
-            if (count > 0) {
-                updateDebug(`   Найдено ${count} записей`);
-                return count;
-            }
-            
-            // Паттерн 2: Поиск всех UUID и названий рядом
-            updateDebug('Паттерн 2: Поиск UUID и названий...');
-            const uuidPattern = /([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/gi;
-            const namePattern = /[nN]ame["\s:]+"([^"]{3,})"/g;
-            
-            const uuids = [...text.matchAll(uuidPattern)].map(m => m[1]);
-            const names = [...text.matchAll(namePattern)].map(m => m[1]);
-            
-            updateDebug(`   Найдено UUID: ${uuids.length}, названий: ${names.length}`);
-            
-            // Пробуем сопоставить
-            for (let i = 0; i < Math.min(uuids.length, names.length); i++) {
-                state.nomenclature.set(uuids[i], {
-                    name: names[i],
-                    code: '—'
-                });
-                state.debug.loadedIds.add(uuids[i]);
-                count++;
-            }
-            
-            if (count > 0) {
-                updateDebug(`   Сопоставлено ${count} записей`);
-                return count;
-            }
-            
-            // Паттерн 3: Поиск в формате "ID - название"
-            updateDebug('Паттерн 3: Поиск в формате ID - название...');
-            const dashPattern = /([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})[^a-f0-9]+([А-ЯЁA-Z][^"]{3,})/gi;
-            
-            while ((match = dashPattern.exec(text)) !== null) {
-                const id = match[1];
-                const name = match[2].trim();
-                
-                if (id && name && name.length < 200) {
-                    state.nomenclature.set(id, { name, code: '—' });
-                    state.debug.loadedIds.add(id);
-                    count++;
-                }
-            }
-            
-            updateDebug(`   Найдено ${count} записей`);
             return count;
         }
 
@@ -536,7 +918,7 @@
 
         // Загрузка стоп-листа
         async function loadStoplist() {
-            updateDebug('Загрузка стоп-листа из Google Sheets...');
+            updateDebug('Загрузка стоп-листа...');
             
             try {
                 const proxyUrl = `https://api.allorigins.win/raw?url=https://opensheet.elk.sh/${CONFIG.GOOGLE_SHEET_ID}/${CONFIG.STOPLIST_SHEET}`;
@@ -547,13 +929,12 @@
                 }
                 
                 const data = await response.json();
-                updateDebug(`✅ Загружено ${data.length} записей из стоп-листа`);
+                updateDebug(`✅ Загружено ${data.length} записей`);
                 
                 state.stoplist = data.map(item => {
                     const productId = item.ProductId;
                     const productInfo = state.nomenclature.get(productId) || {};
                     
-                    // Отслеживаем ненайденные ID
                     if (!productInfo.name && productId) {
                         state.debug.notFoundIds.add(productId);
                     }
@@ -562,21 +943,15 @@
                         OrganizationId: item.OrganizationId,
                         OrganizationName: ORG_NAMES[item.OrganizationId] || `🏢 ${item.OrganizationId?.substring(0, 8)}...`,
                         ProductId: productId || 'Не указан',
-                        ProductName: productInfo.name || getDefaultProductName(productId),
+                        ProductName: productInfo.name || `ID: ${productId?.substring(0, 12)}...`,
                         ProductCode: productInfo.code || '—',
                         Balance: parseInt(item.Balance) || 0,
                         UpdatedAt: item.UpdatedAt || new Date().toISOString()
                     };
                 });
                 
-                // Показываем статистику по ненайденным ID
                 if (state.debug.notFoundIds.size > 0) {
-                    updateDebug(`⚠️ Не найдены в номенклатуре ${state.debug.notFoundIds.size} ID:`);
-                    const notFoundArray = Array.from(state.debug.notFoundIds).slice(0, 5);
-                    notFoundArray.forEach(id => updateDebug(`   - ${id}`));
-                    if (state.debug.notFoundIds.size > 5) {
-                        updateDebug(`   ... и еще ${state.debug.notFoundIds.size - 5}`);
-                    }
+                    updateDebug(`⚠️ Не найдены в номенклатуре ${state.debug.notFoundIds.size} ID`);
                 }
                 
                 state.filteredData = [...state.stoplist];
@@ -585,29 +960,12 @@
                 updateLastUpdate();
                 
             } catch (error) {
-                updateDebug(`❌ Ошибка загрузки стоп-листа: ${error.message}`);
+                updateDebug(`❌ Ошибка: ${error.message}`);
                 state.stoplist = getMockData();
                 state.filteredData = [...state.stoplist];
                 updateFilters();
                 updateStats();
             }
-        }
-
-        // Получение названия по умолчанию
-        function getDefaultProductName(productId) {
-            if (!productId) return 'Неизвестное блюдо';
-            
-            const product = state.nomenclature.get(productId);
-            if (product) return product.name;
-            
-            // Пробуем найти частичное совпадение
-            for (const [id, info] of state.nomenclature.entries()) {
-                if (id.includes(productId.substring(0, 8))) {
-                    return info.name + ' (похожий)';
-                }
-            }
-            
-            return `ID: ${productId.substring(0, 12)}...`;
         }
 
         // Тестовые данные
@@ -728,34 +1086,32 @@
             
             tbody.innerHTML = pageData.map(item => `
                 <tr>
-                    <td>
+                    <td data-label="Организация">
                         <span class="org-badge">
                             <i class="fas fa-store"></i>
                             ${item.OrganizationName}
                         </span>
                     </td>
-                    <td>
+                    <td data-label="Блюдо">
                         <div class="product-info">
                             <span class="product-name">${item.ProductName}</span>
                             ${item.ProductCode !== '—' ? `
                                 <span class="product-code">
-                                    <i class="fas fa-barcode"></i>
-                                    Код: ${item.ProductCode}
+                                    <i class="fas fa-barcode"></i> ${item.ProductCode}
                                 </span>
                             ` : ''}
                             <span class="product-id">
-                                <i class="fas fa-fingerprint"></i>
-                                ID: ${item.ProductId}
+                                ${item.ProductId}
                             </span>
                         </div>
                     </td>
-                    <td>
+                    <td data-label="Наличие">
                         <span class="balance-badge ${item.Balance === 0 ? 'balance-zero' : 'balance-positive'}">
                             <i class="fas ${item.Balance === 0 ? 'fa-times-circle' : 'fa-check-circle'}"></i>
-                            ${item.Balance === 0 ? 'Нет в наличии' : `${item.Balance} шт.`}
+                            ${item.Balance === 0 ? 'Нет' : `${item.Balance} шт.`}
                         </span>
                     </td>
-                    <td>
+                    <td data-label="Обновлено">
                         <div class="date-cell">
                             <i class="far fa-calendar-alt"></i>
                             ${new Date(item.UpdatedAt).toLocaleString('ru-RU', {
@@ -782,25 +1138,34 @@
             
             let pages = [];
             
-            if (state.currentPage > 2) {
-                pages.push(`<button class="page-btn" onclick="goToPage(1)">1</button>`);
-                if (state.currentPage > 3) {
-                    pages.push(`<span class="page-btn" style="background: none; box-shadow: none;">...</span>`);
+            if (totalPages <= 5) {
+                for (let i = 1; i <= totalPages; i++) {
+                    pages.push(`
+                        <button class="page-btn ${i === state.currentPage ? 'active' : ''}" 
+                                onclick="goToPage(${i})">${i}</button>
+                    `);
                 }
-            }
-            
-            for (let i = Math.max(1, state.currentPage - 1); i <= Math.min(totalPages, state.currentPage + 1); i++) {
-                pages.push(`
-                    <button class="page-btn ${i === state.currentPage ? 'active' : ''}" 
-                            onclick="goToPage(${i})">${i}</button>
-                `);
-            }
-            
-            if (state.currentPage < totalPages - 1) {
-                if (state.currentPage < totalPages - 2) {
-                    pages.push(`<span class="page-btn" style="background: none; box-shadow: none;">...</span>`);
+            } else {
+                if (state.currentPage > 2) {
+                    pages.push(`<button class="page-btn" onclick="goToPage(1)">1</button>`);
+                    if (state.currentPage > 3) {
+                        pages.push(`<span class="page-btn" style="background: none;">...</span>`);
+                    }
                 }
-                pages.push(`<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`);
+                
+                for (let i = Math.max(1, state.currentPage - 1); i <= Math.min(totalPages, state.currentPage + 1); i++) {
+                    pages.push(`
+                        <button class="page-btn ${i === state.currentPage ? 'active' : ''}" 
+                                onclick="goToPage(${i})">${i}</button>
+                    `);
+                }
+                
+                if (state.currentPage < totalPages - 1) {
+                    if (state.currentPage < totalPages - 2) {
+                        pages.push(`<span class="page-btn" style="background: none;">...</span>`);
+                    }
+                    pages.push(`<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`);
+                }
             }
             
             pageNumbers.innerHTML = pages.join('');
