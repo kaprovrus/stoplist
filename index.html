@@ -1,71 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Стоп-лист</title>
+<title>Стоп-лист организаций</title>
 <style>
-body { font-family: Arial; background:#f4f6f9; padding:20px; }
-.restaurant { margin-bottom:25px; }
-.restaurant h2 { background:#222; color:#fff; padding:8px; border-radius:6px; }
-.card {
-  background:#fff; padding:10px; margin:6px 0;
-  border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,.08);
-  display:flex; justify-content:space-between;
-}
-.stop { color:red; font-weight:bold; }
-.empty { color:green; font-weight:bold; }
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+  table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background-color: #4CAF50; color: white; }
+  img { width: 80px; height: auto; }
+  button { padding: 10px 20px; background: #2196F3; color: white; border: none; cursor: pointer; }
+  button:hover { background: #0b7dda; }
 </style>
 </head>
 <body>
 
-<h1>Стоп-лист</h1>
-<div id="container">Загрузка...</div>
+<h1>Стоп-лист организаций</h1>
+<button id="refreshBtn">Обновить</button>
+<table id="stopTable">
+  <thead>
+    <tr>
+      <th>Фото</th>
+      <th>Организация</th>
+      <th>TerminalGroupId</th>
+      <th>ProductId</th>
+      <th>Название продукта</th>
+      <th>Баланс</th>
+      <th>Обновлено</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwqmtU3e3sRR9HVgW9wZ5RMw2RJk3M3_GJzDI5Qcjm5OdG8lqlV4-c6j5ESo44YJEbS/exec";
+const STOPLIST_URL = "https://script.google.com/macros/s/AKfycby-OU2w7NJXs_YCP5-9PW9Fuk5Xv6Xrd7Xk_pPYkbw-_zOp3seEAyd9iXF9zvBb4Ed1/exec";
 
-// 👉 ВОТ ЗДЕСЬ ИДЁТ ОБРАЩЕНИЕ К ТВОЕМУ APPS SCRIPT
-async function loadStopList() {
-  try {
-    const response = await fetch(API_URL);
-    const data = await response.json();
+// Словарь организации → фото
+const ORG_PHOTOS = {
+  "T-086 КЗ": "https://example.com/photo1.png",
+  "T-103 КЗ": "https://example.com/photo2.png",
+  "T-104 КЗ": "https://example.com/photo3.png",
+  "T-110 КЗ": "https://example.com/photo4.png",
+  "T-117 КЗ": "https://example.com/photo5.png",
+  "T-118 КЗ": "https://example.com/photo6.png",
+  "T-119 КЗ": "https://example.com/photo7.png"
+};
 
-    const container = document.getElementById("container");
-    container.innerHTML = "";
+function fetchStopList() {
+  fetch(STOPLIST_URL)
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.querySelector("#stopTable tbody");
+      tbody.innerHTML = "";
 
-    if (!data || Object.keys(data).length === 0) {
-      container.innerHTML = "<div class='empty'>Нет позиций в стоп-листе</div>";
-      return;
-    }
+      data.forEach(row => {
+        const tr = document.createElement("tr");
 
-    for (const org in data) {
-      const block = document.createElement("div");
-      block.className = "restaurant";
-      block.innerHTML = `<h2>${org}</h2>`;
+        // Фото
+        const imgTd = document.createElement("td");
+        const img = document.createElement("img");
+        img.src = ORG_PHOTOS[row.OrganizationName] || "";
+        imgTd.appendChild(img);
+        tr.appendChild(imgTd);
 
-      data[org].forEach(item => {
-        block.innerHTML += `
-          <div class="card">
-            <div>${item.productName}</div>
-            <div class="stop">STOP</div>
-          </div>
-        `;
+        // Название организации
+        const orgTd = document.createElement("td");
+        orgTd.textContent = row.OrganizationName;
+        tr.appendChild(orgTd);
+
+        // TerminalGroupId
+        const termTd = document.createElement("td");
+        termTd.textContent = row.TerminalGroupId;
+        tr.appendChild(termTd);
+
+        // ProductId
+        const prodTd = document.createElement("td");
+        prodTd.textContent = row.ProductId;
+        tr.appendChild(prodTd);
+
+        // Название продукта
+        const nameTd = document.createElement("td");
+        nameTd.textContent = row.ProductName || "";
+        tr.appendChild(nameTd);
+
+        // Баланс
+        const balTd = document.createElement("td");
+        balTd.textContent = row.Balance;
+        tr.appendChild(balTd);
+
+        // Дата обновления
+        const dateTd = document.createElement("td");
+        dateTd.textContent = row.UpdatedAt;
+        tr.appendChild(dateTd);
+
+        tbody.appendChild(tr);
       });
-
-      container.appendChild(block);
-    }
-
-  } catch (e) {
-    document.getElementById("container").innerHTML =
-      "<div style='color:red'>Ошибка загрузки</div>";
-    console.error(e);
-  }
+    })
+    .catch(err => console.error("Ошибка загрузки стоп-листа:", err));
 }
 
-loadStopList();
+// Кнопка обновления
+document.getElementById("refreshBtn").addEventListener("click", () => {
+  // Запускаем скрипт и обновляем таблицу
+  fetch(STOPLIST_URL)
+    .then(() => {
+      setTimeout(fetchStopList, 2000); // даём скрипту 2 сек на обновление
+    });
+});
 
-// автообновление каждые 60 сек
-setInterval(loadStopList, 60000);
+// Загрузка при старте
+fetchStopList();
 </script>
 
 </body>
