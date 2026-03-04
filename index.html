@@ -45,7 +45,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -131,8 +131,8 @@
         }
 
         .filter-wrapper {
-            flex: 1;
-            min-width: 200px;
+            flex: 2;
+            min-width: 300px;
             position: relative;
         }
 
@@ -163,6 +163,7 @@
         }
 
         .filter-select {
+            flex: 1;
             padding: 14px 24px;
             border: 2px solid #eef2f6;
             border-radius: 50px;
@@ -175,7 +176,6 @@
         .btn-group {
             display: flex;
             gap: 12px;
-            margin-left: auto;
         }
 
         .btn {
@@ -215,7 +215,7 @@
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             padding: 30px;
             background: linear-gradient(to right, #f8fafc, #ffffff);
@@ -235,7 +235,6 @@
         .stat-card:nth-child(1) { animation-delay: 0.1s; }
         .stat-card:nth-child(2) { animation-delay: 0.2s; }
         .stat-card:nth-child(3) { animation-delay: 0.3s; }
-        .stat-card:nth-child(4) { animation-delay: 0.4s; }
 
         .stat-card:hover {
             transform: translateY(-5px);
@@ -305,44 +304,35 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 16px;
+            padding: 8px 16px;
             background: linear-gradient(135deg, #f0f4ff, #e6ecfe);
             color: var(--primary);
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.9em;
+            font-size: 0.95em;
             border: 1px solid rgba(67, 97, 238, 0.2);
-        }
-
-        .terminal-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            background: #f1f3f5;
-            border-radius: 30px;
-            font-size: 0.85em;
-            color: var(--dark);
+            white-space: nowrap;
         }
 
         .product-info {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .product-name {
             font-weight: 700;
             color: var(--dark);
             font-size: 1.1em;
+            line-height: 1.4;
         }
 
         .product-code {
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: var(--gray);
             font-family: 'SF Mono', monospace;
             background: #f1f3f5;
-            padding: 2px 8px;
+            padding: 4px 10px;
             border-radius: 20px;
             display: inline-block;
             width: fit-content;
@@ -352,17 +342,19 @@
             font-size: 0.75em;
             color: var(--gray);
             font-family: monospace;
-            opacity: 0.7;
+            opacity: 0.6;
+            word-break: break-all;
         }
 
         .balance-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             padding: 8px 16px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.9em;
+            font-size: 0.95em;
+            white-space: nowrap;
         }
 
         .balance-zero {
@@ -383,6 +375,7 @@
             gap: 8px;
             color: var(--gray);
             font-size: 0.9em;
+            white-space: nowrap;
         }
 
         .pagination {
@@ -472,8 +465,21 @@
             .header h1 { font-size: 2em; }
             .filter-group { flex-direction: column; }
             .filter-wrapper, .filter-select { width: 100%; }
-            .btn-group { width: 100%; margin-left: 0; }
+            .btn-group { width: 100%; }
             .btn { flex: 1; justify-content: center; }
+            
+            td {
+                padding: 15px;
+            }
+            
+            .org-badge {
+                white-space: normal;
+                word-break: break-word;
+            }
+            
+            .date-cell {
+                white-space: normal;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -486,7 +492,7 @@
                     <h1>🍽️ Стоп-лист T-КЗ</h1>
                     <p>
                         <i class="fas fa-store"></i>
-                        <span id="activeOrganizations">0</span> активных организаций
+                        <span id="activeOrganizations">0</span> организаций
                     </p>
                 </div>
                 <div class="date-badge">
@@ -505,10 +511,6 @@
                 
                 <select class="filter-select" id="organizationFilter">
                     <option value="">🏢 Все организации</option>
-                </select>
-                
-                <select class="filter-select" id="terminalFilter">
-                    <option value="">📱 Все терминалы</option>
                 </select>
                 
                 <div class="btn-group">
@@ -538,11 +540,6 @@
                 <h3 id="organizationsCount">0</h3>
                 <p>Организаций</p>
             </div>
-            <div class="stat-card">
-                <i class="fas fa-hashtag stat-icon"></i>
-                <h3 id="uniqueProducts">0</h3>
-                <p>Уникальных блюд</p>
-            </div>
         </div>
 
         <div class="table-container">
@@ -570,7 +567,6 @@
                 <thead>
                     <tr>
                         <th>Организация</th>
-                        <th>Терминал</th>
                         <th>Блюдо</th>
                         <th>Наличие</th>
                         <th>Обновлено</th>
@@ -616,20 +612,19 @@
         const CONFIG = {
             GOOGLE_SHEET_ID: '1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho',
             STOPLIST_SHEET: 'stoplist',
-            NOMENCLATURE_URL: 'https://drive.google.com/uc?export=download&id=1tb96m0HOL_PgAy1R1pEpczLgAMVxHy2g', // Прямая ссылка на скачивание
+            NOMENCLATURE_URL: 'https://drive.google.com/uc?export=download&id=1tb96m0HOL_PgAy1R1pEpczLgAMVxHy2g',
             ITEMS_PER_PAGE: 15
         };
 
         // Состояние приложения
         let state = {
             stoplist: [],
-            nomenclature: new Map(), // Map для быстрого поиска по ID
+            nomenclature: new Map(),
             filteredData: [],
             currentPage: 1,
             filters: {
                 search: '',
-                organization: '',
-                terminal: ''
+                organization: ''
             }
         };
 
@@ -643,12 +638,8 @@
             showLoading();
             
             try {
-                // Загружаем номенклатуру
                 await loadNomenclature();
-                
-                // Загружаем стоп-лист
                 await loadStoplist();
-                
                 hideLoading();
                 renderTable();
             } catch (error) {
@@ -672,19 +663,12 @@
                 console.log('Загружено позиций в номенклатуре:', state.nomenclature.size);
                 
             } catch (error) {
-                console.warn('Не удалось загрузить номенклатуру, использую тестовые названия:', error);
-                // Создаем тестовую номенклатуру
-                state.nomenclature.set('2d4cc037-1414-458f-a084-7a76f2b75062', {
-                    name: 'Т110 КЗ',
-                    code: '00001'
-                });
+                console.warn('Не удалось загрузить номенклатуру:', error);
             }
         }
 
         // Парсинг файла номенклатуры
         function parseNomenclature(text) {
-            // Регулярное выражение для поиска JSON-подобных записей
-            // Ищет паттерн: "id":"...","code":"...","name":"..."
             const regex = /"id":"([^"]+)","code":"([^"]*)","name":"([^"]+)"/g;
             
             let match;
@@ -705,30 +689,6 @@
             }
             
             console.log(`Найдено ${count} записей в номенклатуре`);
-            
-            // Если ничего не найдено, пробуем другой формат
-            if (count === 0) {
-                parseAlternativeFormat(text);
-            }
-        }
-
-        // Альтернативный парсер для других форматов
-        function parseAlternativeFormat(text) {
-            // Ищем записи вида: id: "значение", name: "значение"
-            const regex = /id:\s*"([^"]+)".*?name:\s*"([^"]+)"/gs;
-            
-            let match;
-            while ((match = regex.exec(text)) !== null) {
-                const id = match[1];
-                const name = match[2];
-                
-                if (id && name) {
-                    state.nomenclature.set(id, {
-                        name: name,
-                        code: '—'
-                    });
-                }
-            }
         }
 
         // Загрузка стоп-листа
@@ -747,13 +707,12 @@
                         const productInfo = state.nomenclature.get(item.ProductId) || {};
                         
                         return {
-                            ...item,
+                            OrganizationId: item.OrganizationId,
                             OrganizationName: ORG_NAMES[item.OrganizationId] || `🏢 ${item.OrganizationId?.substring(0, 8)}...`,
-                            Balance: parseInt(item.Balance) || 0,
-                            TerminalGroupId: item.TerminalGroupId || 'Не указан',
                             ProductId: item.ProductId || 'Не указан',
                             ProductName: productInfo.name || getDefaultProductName(item.ProductId),
                             ProductCode: productInfo.code || '—',
+                            Balance: parseInt(item.Balance) || 0,
                             UpdatedAt: item.UpdatedAt || new Date().toISOString()
                         };
                     });
@@ -779,11 +738,9 @@
         function getDefaultProductName(productId) {
             if (!productId) return 'Неизвестное блюдо';
             
-            // Пробуем найти в номенклатуре
             const product = state.nomenclature.get(productId);
             if (product) return product.name;
             
-            // Возвращаем сокращенный ID
             return `Блюдо (${productId.substring(0, 8)}...)`;
         }
 
@@ -793,7 +750,6 @@
                 {
                     OrganizationId: "25dce975-4631-4f2f-b191-0d44195ad5ed",
                     OrganizationName: "🏢 T-086 КЗ",
-                    TerminalGroupId: "TERM-001",
                     ProductId: "2d4cc037-1414-458f-a084-7a76f2b75062",
                     ProductName: "Т110 КЗ",
                     ProductCode: "00001",
@@ -803,11 +759,19 @@
                 {
                     OrganizationId: "2d4cc037-1414-458f-a084-7a76f2b75062",
                     OrganizationName: "🏢 T-110 КЗ",
-                    TerminalGroupId: "TERM-002",
                     ProductId: "88380744-2d57-4539-a977-d4581027fc44",
                     ProductName: "АКЦИЯ АРИГАТО СЕТ + 4 МАРТИНИ ТОНИК ФИЕРО",
                     ProductCode: "06848",
                     Balance: 0,
+                    UpdatedAt: new Date().toISOString()
+                },
+                {
+                    OrganizationId: "6875a62f-f49b-49e4-a2b9-4edc4797d06e",
+                    OrganizationName: "🏢 T-119 КЗ",
+                    ProductId: "8d3cc790-9946-406a-a68d-12a8710e18ab",
+                    ProductName: "Белое вино",
+                    ProductCode: "00023",
+                    Balance: 5,
                     UpdatedAt: new Date().toISOString()
                 }
             ];
@@ -816,23 +780,16 @@
         // Обновление фильтров
         function updateFilters() {
             const organizations = [...new Set(state.stoplist.map(item => item.OrganizationName))];
-            const terminals = [...new Set(state.stoplist.map(item => item.TerminalGroupId))];
             
             const orgSelect = document.getElementById('organizationFilter');
-            const termSelect = document.getElementById('terminalFilter');
-            
             orgSelect.innerHTML = '<option value="">🏢 Все организации</option>' + 
                 organizations.sort().map(org => `<option value="${org}">${org}</option>`).join('');
-            
-            termSelect.innerHTML = '<option value="">📱 Все терминалы</option>' + 
-                terminals.sort().map(term => `<option value="${term}">Терминал ${term}</option>`).join('');
         }
 
         // Применение фильтров
         function applyFilters() {
             state.filters.search = document.getElementById('searchInput').value.toLowerCase();
             state.filters.organization = document.getElementById('organizationFilter').value;
-            state.filters.terminal = document.getElementById('terminalFilter').value;
             
             state.filteredData = state.stoplist.filter(item => {
                 const searchTerm = state.filters.search;
@@ -844,10 +801,7 @@
                 const matchesOrg = state.filters.organization === '' || 
                     item.OrganizationName === state.filters.organization;
                 
-                const matchesTerm = state.filters.terminal === '' || 
-                    item.TerminalGroupId === state.filters.terminal;
-                
-                return matchesSearch && matchesOrg && matchesTerm;
+                return matchesSearch && matchesOrg;
             });
             
             state.currentPage = 1;
@@ -860,9 +814,8 @@
         function resetFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('organizationFilter').value = '';
-            document.getElementById('terminalFilter').value = '';
             
-            state.filters = { search: '', organization: '', terminal: '' };
+            state.filters = { search: '', organization: '' };
             state.filteredData = [...state.stoplist];
             state.currentPage = 1;
             
@@ -876,12 +829,10 @@
             const totalProducts = state.filteredData.length;
             const zeroBalance = state.filteredData.filter(item => item.Balance === 0).length;
             const organizations = new Set(state.filteredData.map(item => item.OrganizationName)).size;
-            const uniqueProducts = new Set(state.filteredData.map(item => item.ProductId)).size;
             
             document.getElementById('totalProducts').textContent = totalProducts;
             document.getElementById('zeroBalance').textContent = zeroBalance;
             document.getElementById('organizationsCount').textContent = organizations;
-            document.getElementById('uniqueProducts').textContent = uniqueProducts;
             document.getElementById('activeOrganizations').textContent = organizations;
             document.getElementById('recordsCount').textContent = totalProducts;
         }
@@ -929,12 +880,6 @@
                         </span>
                     </td>
                     <td>
-                        <span class="terminal-badge">
-                            <i class="fas fa-terminal"></i>
-                            ${item.TerminalGroupId}
-                        </span>
-                    </td>
-                    <td>
                         <div class="product-info">
                             <span class="product-name">${item.ProductName}</span>
                             ${item.ProductCode !== '—' ? `
@@ -952,7 +897,7 @@
                     <td>
                         <span class="balance-badge ${item.Balance === 0 ? 'balance-zero' : 'balance-positive'}">
                             <i class="fas ${item.Balance === 0 ? 'fa-times-circle' : 'fa-check-circle'}"></i>
-                            ${item.Balance === 0 ? 'Нет в наличии' : `В наличии: ${item.Balance} шт.`}
+                            ${item.Balance === 0 ? 'Нет в наличии' : `${item.Balance} шт.`}
                         </span>
                     </td>
                     <td>
