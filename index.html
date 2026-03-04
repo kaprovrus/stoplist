@@ -34,39 +34,31 @@
             padding-bottom: 10px;
         }
         
-        .toolbar {
+        .info-bar {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 15px 20px;
             margin-bottom: 20px;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-        }
-        
-        button {
-            padding: 12px 30px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        button:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        button:active {
-            transform: translateY(0);
+            gap: 15px;
         }
         
         .last-update {
-            color: #666;
+            color: #2e7d32;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .next-update {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-size: 14px;
         }
         
@@ -74,24 +66,26 @@
             overflow-x: auto;
             border-radius: 8px;
             border: 1px solid #ddd;
+            max-height: 600px;
+            overflow-y: auto;
         }
         
         table {
             border-collapse: collapse;
             width: 100%;
-            min-width: 1000px;
+            min-width: 1200px;
         }
         
         th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 0.5px;
+            font-size: 13px;
             padding: 15px 10px;
             position: sticky;
             top: 0;
+            z-index: 10;
         }
         
         td {
@@ -104,6 +98,11 @@
             background-color: #f5f5f5;
         }
         
+        .organization-name {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
         .status-badge {
             display: inline-block;
             padding: 4px 8px;
@@ -112,26 +111,27 @@
             font-weight: 600;
         }
         
-        .status-active {
+        .status-stop {
             background-color: #ffebee;
             color: #c62828;
         }
         
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-            font-size: 18px;
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
         }
         
-        .loading::after {
-            content: '';
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            margin-left: 10px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #4CAF50;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -144,23 +144,43 @@
         .error-message {
             background-color: #ffebee;
             color: #c62828;
-            padding: 15px;
+            padding: 20px;
             border-radius: 5px;
             margin: 20px 0;
             border-left: 4px solid #c62828;
         }
         
         .product-id {
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 12px;
             color: #666;
+            background: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
         
-        .footer {
-            margin-top: 20px;
-            text-align: right;
-            color: #999;
-            font-size: 12px;
+        .balance-negative {
+            font-weight: bold;
+            color: #c62828;
+        }
+        
+        .balance-positive {
+            color: #2e7d32;
+        }
+        
+        .retry-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .retry-button:hover {
+            background: #45a049;
         }
     </style>
 </head>
@@ -168,21 +188,25 @@
     <div class="container">
         <h1>📋 Стоп-лист организаций</h1>
         
-        <div class="toolbar">
-            <button id="refreshBtn" onclick="refreshData()">
-                🔄 Обновить данные
-            </button>
-            <span class="last-update" id="lastUpdate"></span>
+        <div class="info-bar">
+            <div class="last-update" id="lastUpdate">
+                <span>⏱️</span> Загрузка данных...
+            </div>
+            <div class="next-update" id="nextUpdate">
+                ⏰ Следующее обновление через: <span id="countdown">60:00</span>
+            </div>
         </div>
         
-        <div id="errorContainer" style="display: none;" class="error-message"></div>
+        <div id="errorContainer" style="display: none;" class="error-message">
+            <div id="errorText"></div>
+            <button class="retry-button" onclick="forceRefresh()">🔄 Повторить попытку</button>
+        </div>
         
         <div class="table-container">
             <table id="stopTable">
                 <thead>
                     <tr>
-                        <th>ID организации</th>
-                        <th>Название организации</th>
+                        <th>Организация</th>
                         <th>TerminalGroupId</th>
                         <th>ID продукта</th>
                         <th>Название продукта</th>
@@ -193,109 +217,136 @@
                 </thead>
                 <tbody id="tableBody">
                     <tr>
-                        <td colspan="8" class="loading">Загрузка данных...</td>
+                        <td colspan="7" class="loading">
+                            <div class="spinner"></div>
+                            <div style="margin-top: 20px;">Загрузка данных...</div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-        
-        <div class="footer">
-            Данные обновляются автоматически при нажатии кнопки "Обновить"
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-OU2w7NJXs_YCP5-9PW9Fuk5Xv6Xrd7Xk_pPYkbw-_zOp3seEAyd9iXF9zvBb4Ed1/exec";
-        const SHEET_ID = "1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho";
         
-        let productsCache = null;
-        let stoplistData = [];
+        // Словарь OrganizationId → Название организации
+        const ORG_NAMES = {
+            "25dce975-4631-4f2f-b191-0d44195ad5ed": "T-086 КЗ",
+            "8c4e2b8e-6b4a-40f4-9c7f-68a2f5d62445": "T-103 КЗ",
+            "27a6f2df-366d-426d-a015-7579b856fa64": "T-104 КЗ",
+            "2d4cc037-1414-458f-a084-7a76f2b75062": "T-110 КЗ",
+            "86871894-0d80-4148-8992-c0c5811ad5cf": "T-117 КЗ",
+            "74127077-f35e-410b-ad97-cb013398266d": "T-118 КЗ",
+            "6875a62f-f49b-49e4-a2b9-4edc4797d06e": "T-119 КЗ"
+        };
+        
+        // Кэш для продуктов (ID → название)
+        let productsCache = {
+            // Пример данных, если не загрузятся из таблицы
+            "example-id": "Пример продукта"
+        };
+        
+        let stoplistCache = null;
+        let lastFetchTime = null;
+        let retryCount = 0;
 
-        // Загрузка данных о продуктах из таблицы
+        // Загрузка данных о продуктах через CSV (обходит CORS)
         async function loadProducts() {
-            try {
-                // Если данные уже загружены, возвращаем их
-                if (productsCache) {
-                    return productsCache;
-                }
+            return new Promise((resolve) => {
+                // Пробуем загрузить через прокси
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const sheetUrl = encodeURIComponent('https://docs.google.com/spreadsheets/d/1YkItHXDAO2Sa4E7FfRI7VDiKrv2GG-rEBJ2O_jOcUho/export?format=csv&sheet=products');
                 
-                // Загружаем данные из таблицы products
-                const productsUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=products`;
-                
-                const response = await fetch(productsUrl);
-                const text = await response.text();
-                
-                // Парсим JSON из ответа Google Sheets
-                const jsonText = text.substring(47, text.length - 2);
-                const data = JSON.parse(jsonText);
-                
-                // Создаем словарь ID -> название продукта
-                const products = {};
-                
-                data.table.rows.forEach(row => {
-                    // Формат: №, ID, Название, Код, Тип
-                    const id = row.c[1]?.v; // ID продукта
-                    const name = row.c[2]?.v; // Название продукта
-                    
-                    if (id && name) {
-                        products[id] = name;
-                    }
-                });
-                
-                console.log("Загружены продукты:", products);
-                productsCache = products;
-                return products;
-                
-            } catch (error) {
-                console.error("Ошибка загрузки продуктов:", error);
-                showError("Не удалось загрузить список продуктов");
-                return {};
-            }
+                fetch(proxyUrl + sheetUrl)
+                    .then(response => response.text())
+                    .then(csvText => {
+                        const products = {};
+                        const lines = csvText.split('\n');
+                        
+                        // Пропускаем заголовок
+                        for (let i = 1; i < lines.length; i++) {
+                            const line = lines[i].trim();
+                            if (!line) continue;
+                            
+                            // Простой парсинг CSV
+                            const columns = line.split(',');
+                            if (columns.length >= 2) {
+                                const id = columns[0]?.replace(/"/g, '').trim();
+                                const name = columns[1]?.replace(/"/g, '').trim();
+                                
+                                if (id && name) {
+                                    products[id] = name;
+                                }
+                            }
+                        }
+                        
+                        console.log("Загружено продуктов:", Object.keys(products).length);
+                        productsCache = products;
+                        resolve(products);
+                    })
+                    .catch(error => {
+                        console.warn("Не удалось загрузить продукты через прокси:", error);
+                        // Возвращаем пустой объект, но продолжаем работу
+                        resolve({});
+                    });
+            });
         }
 
-        // Загрузка стоп-листа
-        async function loadStoplist() {
-            try {
-                const response = await fetch(SCRIPT_URL);
+        // Загрузка стоп-листа через JSONP
+        function loadStoplist() {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'jsonp_callback_' + Math.random().toString(36).substr(2, 9);
                 
-                if (!response.ok) {
-                    throw new Error(`Ошибка HTTP: ${response.status}`);
-                }
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(data);
+                };
                 
-                const data = await response.json();
-                console.log("Загружен стоп-лист:", data);
+                const script = document.createElement('script');
+                script.src = `${SCRIPT_URL}?callback=${callbackName}&t=${Date.now()}`;
                 
-                if (!Array.isArray(data)) {
-                    throw new Error("Неверный формат данных стоп-листа");
-                }
+                script.onerror = function() {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    reject(new Error('Не удалось загрузить стоп-лист'));
+                };
                 
-                return data;
+                document.body.appendChild(script);
                 
-            } catch (error) {
-                console.error("Ошибка загрузки стоп-листа:", error);
-                showError("Не удалось загрузить стоп-лист: " + error.message);
-                return [];
-            }
+                // Таймаут 10 секунд
+                setTimeout(() => {
+                    if (window[callbackName]) {
+                        delete window[callbackName];
+                        document.body.removeChild(script);
+                        reject(new Error('Таймаут загрузки стоп-листа'));
+                    }
+                }, 10000);
+            });
         }
 
         // Обновление таблицы
         async function refreshData() {
             const tbody = document.getElementById("tableBody");
             const errorDiv = document.getElementById("errorContainer");
+            const errorText = document.getElementById("errorText");
             
-            // Показываем загрузку
-            tbody.innerHTML = '<tr><td colspan="8" class="loading">Загрузка данных...</td></tr>';
             errorDiv.style.display = "none";
             
             try {
-                // Загружаем данные параллельно
-                const [products, stoplist] = await Promise.all([
-                    loadProducts(),
-                    loadStoplist()
-                ]);
+                // Загружаем продукты (не критично, если не загрузятся)
+                await loadProducts();
                 
-                if (stoplist.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">Нет данных в стоп-листе</td></tr>';
+                // Загружаем стоп-лист
+                const stoplist = await loadStoplist();
+                
+                stoplistCache = stoplist;
+                lastFetchTime = new Date();
+                retryCount = 0;
+                
+                if (!stoplist || stoplist.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">📭 Нет данных в стоп-листе</td></tr>';
                     return;
                 }
                 
@@ -303,40 +354,45 @@
                 tbody.innerHTML = "";
                 
                 // Заполняем таблицу данными
+                let stopCount = 0;
+                
                 stoplist.forEach(item => {
                     const row = document.createElement("tr");
                     
-                    // ID организации (если есть в данных)
-                    const orgId = item.OrganizationName || item.organizationId || item.orgId || "";
+                    // ID организации
+                    const orgId = item.OrganizationId || item.organizationId || item.orgId || "";
                     
-                    // Название организации (пока оставляем ID, можно заменить на словарь если есть)
-                    const orgName = orgId;
+                    // Название организации из словаря
+                    const orgName = ORG_NAMES[orgId] || orgId;
                     
-                    // Название продукта из кэша
+                    // Название продукта
                     const productId = item.ProductId || item.productId || "";
-                    const productName = products[productId] || "Неизвестно";
+                    const productName = productsCache[productId] || "Неизвестно";
                     
                     // Баланс
-                    const balance = item.Balance !== undefined ? item.Balance : 
-                                   (item.balance !== undefined ? item.balance : "0");
+                    const balance = parseFloat(item.Balance !== undefined ? item.Balance : 
+                                   (item.balance !== undefined ? item.balance : 0));
+                    
+                    if (balance <= 0) stopCount++;
+                    
+                    // TerminalGroupId
+                    const terminalGroupId = item.TerminalGroupId || item.terminalGroupId || "";
                     
                     // Дата обновления
                     const updateDate = item.UpdatedAt || item.updatedAt || item.updateTime || 
                                       new Date().toLocaleString('ru-RU');
                     
-                    // Статус (красный если баланс <= 0)
-                    const status = balance <= 0 ? "Стоп" : "Активен";
-                    const statusClass = balance <= 0 ? "status-badge status-active" : "status-badge";
+                    // Статус
+                    const status = balance <= 0 ? "СТОП" : "Активен";
+                    const statusClass = balance <= 0 ? "status-badge status-stop" : "status-badge status-active";
                     
-                    // Формируем строки
                     row.innerHTML = `
-                        <td class="product-id">${orgId}</td>
-                        <td>${orgName}</td>
-                        <td>${item.TerminalGroupId || item.terminalGroupId || ""}</td>
-                        <td class="product-id">${productId}</td>
+                        <td><span class="organization-name">${orgName}</span></td>
+                        <td>${terminalGroupId}</td>
+                        <td><span class="product-id">${productId}</span></td>
                         <td><strong>${productName}</strong></td>
-                        <td style="font-weight: ${balance <= 0 ? 'bold' : 'normal'}; color: ${balance <= 0 ? '#c62828' : '#2e7d32'}">
-                            ${balance}
+                        <td class="${balance <= 0 ? 'balance-negative' : 'balance-positive'}">
+                            ${balance.toFixed(2)}
                         </td>
                         <td>${updateDate}</td>
                         <td><span class="${statusClass}">${status}</span></td>
@@ -345,40 +401,88 @@
                     tbody.appendChild(row);
                 });
                 
-                // Обновляем время последнего обновления
-                document.getElementById("lastUpdate").textContent = 
-                    `Последнее обновление: ${new Date().toLocaleString('ru-RU')}`;
+                // Обновляем информацию
+                document.getElementById("lastUpdate").innerHTML = `
+                    <span>✅</span> Обновлено: ${lastFetchTime.toLocaleString('ru-RU')}
+                    <span style="background: #ffebee; color: #c62828; padding: 2px 8px; border-radius: 12px; margin-left: 10px;">
+                        Стоп: ${stopCount}
+                    </span>
+                `;
                 
             } catch (error) {
-                console.error("Ошибка обновления данных:", error);
-                showError("Произошла ошибка при загрузке данных: " + error.message);
+                console.error("Ошибка:", error);
+                
+                errorText.innerHTML = `Ошибка загрузки: ${error.message}<br>
+                    <small>Проверьте доступ к интернету и повторите попытку</small>`;
+                errorDiv.style.display = "block";
+                
+                if (stoplistCache) {
+                    // Показываем кэшированные данные
+                    displayCachedData();
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">❌ Не удалось загрузить данные</td></tr>';
+                }
             }
         }
 
-        // Показать ошибку
-        function showError(message) {
-            const errorDiv = document.getElementById("errorContainer");
-            errorDiv.textContent = message;
-            errorDiv.style.display = "block";
+        // Показать кэшированные данные
+        function displayCachedData() {
+            if (!stoplistCache) return;
             
             const tbody = document.getElementById("tableBody");
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">Ошибка загрузки данных</td></tr>';
+            tbody.innerHTML = "";
+            
+            stoplistCache.forEach(item => {
+                const row = document.createElement("tr");
+                const orgId = item.OrganizationId || item.organizationId || item.orgId || "";
+                const orgName = ORG_NAMES[orgId] || orgId;
+                const productId = item.ProductId || item.productId || "";
+                const productName = productsCache[productId] || "Неизвестно";
+                const balance = parseFloat(item.Balance !== undefined ? item.Balance : 
+                               (item.balance !== undefined ? item.balance : 0));
+                const terminalGroupId = item.TerminalGroupId || item.terminalGroupId || "";
+                const updateDate = item.UpdatedAt || item.updatedAt || item.updateTime || "";
+                const status = balance <= 0 ? "СТОП" : "Активен";
+                const statusClass = balance <= 0 ? "status-badge status-stop" : "status-badge status-active";
+                
+                row.innerHTML = `
+                    <td><span class="organization-name">${orgName} (кэш)</span></td>
+                    <td>${terminalGroupId}</td>
+                    <td><span class="product-id">${productId}</span></td>
+                    <td><strong>${productName}</strong></td>
+                    <td class="${balance <= 0 ? 'balance-negative' : 'balance-positive'}">${balance.toFixed(2)}</td>
+                    <td>${updateDate}</td>
+                    <td><span class="${statusClass}">${status}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
         }
 
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            refreshData();
-        });
-
-        // Функция для кнопки обновления (доступна глобально)
-        window.refreshData = function() {
+        // Принудительное обновление
+        window.forceRefresh = function() {
             refreshData();
         };
 
-        // Автоматическое обновление каждые 5 минут
-        setInterval(() => {
+        // Обновление таймера
+        function updateCountdown() {
+            const now = new Date();
+            const nextUpdate = new Date(now);
+            nextUpdate.setHours(now.getHours() + 1, 0, 0, 0);
+            
+            const diff = nextUpdate - now;
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            document.getElementById("countdown").textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Запуск
+        document.addEventListener('DOMContentLoaded', () => {
             refreshData();
-        }, 300000);
+            setInterval(updateCountdown, 1000);
+            setInterval(() => refreshData(), 3600000); // Каждый час
+        });
     </script>
 </body>
 </html>
